@@ -4,6 +4,22 @@ package com.github.qlang.core.type;
  * 有理数类，用于表示和处理有理数
  */
 public class Rational {
+
+    /**
+     * 创建值为0的有理数
+     */
+    public static Rational ZERO = new Rational(0, 1);
+
+    /**
+     * 创建值为1的有理数
+     */
+    public static Rational ONE = new Rational(1, 1);
+
+    /**
+     * 创建值为10的有理数
+     */
+    public static Rational TEN = new Rational(10, 1);
+
     private final long numerator;   // 分子
     private final long denominator; // 分母
 
@@ -29,6 +45,48 @@ public class Rational {
         long gcd = gcd(Math.abs(numerator), Math.abs(denominator));
         this.numerator = numerator / gcd;
         this.denominator = denominator / gcd;
+    }
+
+
+    /**
+     * 从整数创建有理数
+     */
+    public static Rational of(long value) {
+        return new Rational(value, 1);
+    }
+
+    /**
+     * 从字符串创建有理数，字符串格式为"numerator/denominator"
+     */
+    public static Rational parse(String str) {
+        try {
+            // 检查是否为分数格式
+            if (str.contains("/")) {
+                String[] parts = str.split("/");
+                if (parts.length != 2) {
+                    throw new IllegalArgumentException(str + "无效的分数格式，应为'分子/分母'");
+                }
+                long numerator = Long.parseLong(parts[0]);
+                long denominator = Long.parseLong(parts[1]);
+                return new Rational(numerator, denominator);
+            }
+
+            // 处理小数格式
+            double value = Double.parseDouble(str);
+            if (value == (long) value) {
+                return new Rational((long) value, 1);
+            }
+
+            // 将小数转换为分数
+            // 例如：1.5 -> 15/10 -> 3/2
+            String decimal = str;
+            int decimalPlaces = decimal.length() - decimal.indexOf('.') - 1;
+            long denominator = (long) Math.pow(10, decimalPlaces);
+            long numerator = (long) (value * denominator);
+            return new Rational(numerator, denominator);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(str + "无效的数字格式");
+        }
     }
 
     /**

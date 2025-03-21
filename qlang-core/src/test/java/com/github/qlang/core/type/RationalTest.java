@@ -92,4 +92,27 @@ class RationalTest {
         Rational r = new Rational(1, 2);
         assertEquals("1/2", r.toString());
     }
+
+    @Test
+    void testParse() {
+        // 测试分数格式
+        assertEquals(new Rational(1, 2), Rational.parse("1/2"));
+        assertEquals(new Rational(-3, 4), Rational.parse("-3/4"));
+
+        // 测试小数格式
+        assertEquals(new Rational(3, 2), Rational.parse("1.5"));
+        assertEquals(new Rational(-25, 10), Rational.parse("-2.5"));
+
+        // 测试整数格式
+        assertEquals(new Rational(5, 1), Rational.parse("5"));
+        assertEquals(new Rational(-7, 1), Rational.parse("-7"));
+        assertEquals(Rational.ZERO, Rational.parse("0"));
+
+        // 测试无效格式
+        assertThrows(IllegalArgumentException.class, () -> Rational.parse("abc"));
+        assertThrows(IllegalArgumentException.class, () -> Rational.parse("1/0"));
+        assertThrows(IllegalArgumentException.class, () -> Rational.parse("1/"));
+        assertThrows(IllegalArgumentException.class, () -> Rational.parse("/2"));
+        assertThrows(IllegalArgumentException.class, () -> Rational.parse("1/2/3"));
+    }
 }
