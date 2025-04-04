@@ -1,5 +1,6 @@
 package com.github.qlang.core.ast;
 
+import com.github.qlang.core.exception.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,8 @@ class ParserTest {
 
     @Test
     void baseArithmetic() {
+        assertThrows(ParseException.class, () -> eval("1 - 2 + 3 3"));
+        assertThrows(ParseException.class, () -> eval("1 - 2 + 3 /  "));
         // 基础运算
         assertEquals(2L, eval("1 - 2 + 3"));
         assertEquals(-3L, eval("4 / 2 - 5"));
