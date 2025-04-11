@@ -32,6 +32,7 @@ class ParserTest {
         assertEquals(13L, eval("2 * (3 + 4) / (5 % 3) + 6"));
         assertEquals(6L, eval("( (10 - 5) * 2^3 ) / (6 + 4 % 2)"));
 
+
         /**
          * 边界条件与特殊值
          * 0 / 5                # 除数为零（非错误）
