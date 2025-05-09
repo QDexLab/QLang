@@ -1,10 +1,12 @@
 package com.github.qlang.core.ast;
 
 import com.github.qlang.core.exception.ParseException;
+import com.github.qlang.core.exception.TokenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParserTest {
     private Context context;
@@ -31,29 +33,31 @@ class ParserTest {
         assertEquals((1.5 + 2.5) * (3.2 - 4.8) / (-0.5), eval("(1.5 + 2.5) * (3.2 - 4.8) / (-0.5)"));
         assertEquals(13L, eval("2 * (3 + 4) / (5 % 3) + 6"));
         assertEquals(6L, eval("( (10 - 5) * 2^3 ) / (6 + 4 % 2)"));
+        assertEquals(2L, eval("1--1"));
+        assertEquals(-2L, eval("---1-++--1"));
 
+        //边界条件与特殊值
+        assertEquals(0L, eval("0 / 5"));
+        assertThrows(ArithmeticException.class, () -> eval("5 / 0"));
+        assertEquals(999999999 * 999999999L, eval("999999999 * 999999999"));
+        assertEquals(0L, eval("-0.0 + 0.0"));
+        assertEquals(3.14159265358979323846 / 2, eval("3.14159265358979323846 / 2"));
 
+        // 空格与格式变化
+        assertEquals(3L+4*2/(1-5), eval("3+4*2/(1-5)"));
+        assertEquals(3L + 4 * 2 / ( 1 -5 ), eval("3 + 4 * 2 / ( 1 -5 )"));
+        assertEquals(5L   -  3  *  2, eval(" 5   -  3  *  2"));
+        assertEquals(( ( 3L + 2 ) * 5 ), eval("( ( 3 + 2 ) * 5 )"));
+
+        // 非法表达式（需捕获错误）
+        assertThrows(ParseException.class, () ->eval("3 + * 4"));
+        assertThrows(ParseException.class, () ->eval("(5 + 3 "));
+        assertThrows(ParseException.class, () ->eval("2.3.4 + 5"));
+        assertThrows(TokenException.class, () ->eval("abc + 5"));
+        assertThrows(ArithmeticException.class, () -> eval("5 + 4 % 0 "));
         /**
          * 边界条件与特殊值
-         * 0 / 5                # 除数为零（非错误）
-         * 5 / 0                # 除以零（需抛出异常）
-         * 999999999 * 999999999 # 大数溢出测试
-         * -0.0 + 0.0           # 负零与零运算
          * 1.234e5 * 2.0        # 科学计数法
-         * 3.14159265358979323846 / 2  # 高精度小数
-         *
-         * ‌空格与格式变化
-         * 3+4*2/(1-5)          # 无空格
-         * 3 + 4 * 2 / ( 1 -5 )# 混合空格
-         *   5   -  3  *  2    # 多空格
-         * ( ( 3 + 2 ) * 5 )    # 多余括号
-         *
-         * 非法表达式（需捕获错误）
-         * 3 + * 4              # 运算符连续
-         * (5 + 3               # 括号不匹配
-         * 2.3.4 + 5            # 小数点错误
-         * abc + 5              # 非法字符
-         * 5 + 4 % 0            # 取模零
          */
     }
 
