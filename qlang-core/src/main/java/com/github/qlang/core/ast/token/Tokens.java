@@ -11,6 +11,12 @@ public class Tokens {
     public static final Token MOD = newSymbol(TokenType.MOD);
     public static final Token POW = newSymbol(TokenType.POW);
     public static final Token DOT = newSymbol(TokenType.DOT);
+    public static final Token TRUE = newSymbol(TokenType.TRUE);
+    public static final Token FALSE = newSymbol(TokenType.FALSE);
+    public static final Token NOT = newSymbol(TokenType.NOT);
+    public static final Token AND = newSymbol(TokenType.AND);
+    public static final Token OR = newSymbol(TokenType.OR);
+    public static final Token XOR = newSymbol(TokenType.XOR);
 
 
     public static Token newSymbol(String tokenType) {

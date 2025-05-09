@@ -31,4 +31,12 @@ class TokenizerTest {
         assertEquals(Tokens.EOF, new Tokenizer("\n\t     ").nextToken());
         assertEquals(Tokens.EOF, new Tokenizer("").nextToken());
     }
+
+    @Test
+    void bool() {
+        Tokenizer tokenizer = new Tokenizer("true false!");
+        assertEquals(Tokens.TRUE, tokenizer.nextToken());
+        assertEquals(Tokens.FALSE, tokenizer.nextToken());
+        assertEquals(Tokens.NOT, tokenizer.nextToken());
+    }
 }

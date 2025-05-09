@@ -1,11 +1,14 @@
 package com.github.qlang.core.ast;
 
+import com.github.qlang.core.ast.node.False;
+import com.github.qlang.core.ast.node.True;
 import com.github.qlang.core.ast.node.DivOp;
 import com.github.qlang.core.ast.node.MinusOp;
 import com.github.qlang.core.ast.node.ModOp;
 import com.github.qlang.core.ast.node.MulOp;
 import com.github.qlang.core.ast.node.NegOp;
 import com.github.qlang.core.ast.node.Node;
+import com.github.qlang.core.ast.node.NotOp;
 import com.github.qlang.core.ast.node.Num;
 import com.github.qlang.core.ast.node.PlusOp;
 import com.github.qlang.core.ast.node.PosOp;
@@ -88,24 +91,27 @@ public class Parser extends Iterator<Token> {
     }
 
     private Node eatPow() {
-        Node left = eatPosNeg();
+        Node left = eatPosNegNot();
         while (peek().is(TokenType.POW)) {
             advance();
-            Node right = eatPosNeg();
+            Node right = eatPosNegNot();
             left = new PowOp(left, right);
         }
         return left;
     }
 
-    private Node eatPosNeg() {
+    private Node eatPosNegNot() {
         Token op = peek();
         if (op.in(TokenType.PLUS, TokenType.MINUS)) {
             advance();
             if (op.is(TokenType.PLUS)) {
-                return new PosOp(eatPosNeg());
+                return new PosOp(eatPosNegNot());
             } else {
-                return new NegOp(eatPosNeg());
+                return new NegOp(eatPosNegNot());
             }
+        } else if (op.is(TokenType.NOT)) {
+            advance();
+            return new NotOp(eatPosNegNot());
         } else {
             return eatUnit();
         }
@@ -123,6 +129,10 @@ public class Parser extends Iterator<Token> {
             throw new ParseException("expected rparen, but: " + peek());
         } else if (token.is(TokenType.NUMBER)) {
             return new Num(token.getValue());
+        } else if (token.is(TokenType.TRUE)) {
+            return new True();
+        } else if (token.is(TokenType.FALSE)) {
+            return new False();
         } else {
             throw new ParseException("unexpected token: " + token);
         }

@@ -13,8 +13,16 @@ public abstract class Iterator<T> {
         this.pos++;
     }
 
+    public void advance(int count) {
+        this.pos += count;
+    }
+
     public T peek() {
         return elements[this.pos];
+    }
+
+    public T peek(int next) {
+        return elements[this.pos + next];
     }
 
     public T next() {

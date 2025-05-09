@@ -61,6 +61,20 @@ class ParserTest {
          */
     }
 
+    @Test
+    void testBoolean() {
+        assertEquals(true, eval("true"));
+        assertEquals(false, eval("false"));
+        assertEquals(false, eval("!!!true"));
+        assertEquals(true, eval("!!!false"));
+        // 异常情况
+        assertThrows(TokenException.class, () -> assertEquals(true, eval("true_")));
+        assertThrows(TokenException.class, () -> assertEquals(true, eval("true5")));
+        assertThrows(TokenException.class, () -> assertEquals(true, eval("trued")));
+        assertThrows(TokenException.class, () -> assertEquals(true, eval("trueD")));
+        assertThrows(ParseException.class, () -> assertEquals(true, eval("true!")));
+    }
+
     private Object eval(String input) {
         return new Parser(input).parse().eval(context);
     }

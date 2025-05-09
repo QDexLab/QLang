@@ -12,4 +12,11 @@ public class TokenType {
     public static final String DOT = "DOT";
     public static final String LPAREN = "LPAREN";
     public static final String RPAREN = "RPAREN";
+    public static final String TRUE = "TRUE";
+    public static final String FALSE = "FALSE";
+    public static final String NOT = "NOT";
+    public static final String AND = "AND";
+    public static final String OR = "OR";
+    public static final String XOR = "XOR";
+
 }
