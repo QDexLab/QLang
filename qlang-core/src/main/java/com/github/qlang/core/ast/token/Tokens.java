@@ -10,6 +10,7 @@ public class Tokens {
     public static final Token DIV = newSymbol(TokenType.DIV);
     public static final Token MOD = newSymbol(TokenType.MOD);
     public static final Token POW = newSymbol(TokenType.POW);
+    public static final Token BIT_REVERSE = newSymbol(TokenType.BIT_REVERSE);
     public static final Token DOT = newSymbol(TokenType.DOT);
     public static final Token TRUE = newSymbol(TokenType.TRUE);
     public static final Token FALSE = newSymbol(TokenType.FALSE);

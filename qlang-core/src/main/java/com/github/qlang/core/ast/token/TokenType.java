@@ -9,6 +9,7 @@ public class TokenType {
     public static final String DIV = "DIV";
     public static final String MOD = "MOD";
     public static final String POW = "POW";
+    public static final String BIT_REVERSE = "BIT_REVERSE";
     public static final String DOT = "DOT";
     public static final String LPAREN = "LPAREN";
     public static final String RPAREN = "RPAREN";

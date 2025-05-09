@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParserTest {
@@ -35,6 +36,11 @@ class ParserTest {
         assertEquals(6L, eval("( (10 - 5) * 2^3 ) / (6 + 4 % 2)"));
         assertEquals(2L, eval("1--1"));
         assertEquals(-2L, eval("---1-++--1"));
+
+        // 按位取反
+        assertEquals(~9L, eval("~9"));
+        assertEquals(~9L, eval("~(~~9.000)"));
+        assertNull(eval("~9.1"));
 
         //边界条件与特殊值
         assertEquals(0L, eval("0 / 5"));

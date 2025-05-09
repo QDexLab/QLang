@@ -49,6 +49,14 @@ public class NumberUtils {
         return Math.pow(left.doubleValue(), right.doubleValue());
     }
 
+    public static Number bitReverse(Number number) {
+        if (NumberUtils.isInteger(number)) {
+            return ~number.longValue();
+        } else {
+            return null;
+        }
+    }
+
     public static boolean isInteger(Number number) {
         if (number == null) {
             return false;

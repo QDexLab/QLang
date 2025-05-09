@@ -47,6 +47,9 @@ public class Tokenizer extends Iterator<Character> {
                 case '^':
                     advance();
                     return Tokens.POW;
+                case '~':
+                    advance();
+                    return Tokens.BIT_REVERSE;
                 case '.':
                     advance();
                     return Tokens.DOT;
