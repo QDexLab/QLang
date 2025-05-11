@@ -64,20 +64,68 @@ public class Tokenizer extends Iterator<Character> {
                 case '8':
                 case '9':
                     return nextNumber();
-                case 't':
-                    if (hasEnough(4) && followWord("true")) {
-                        advance(4);
-                        return Tokens.TRUE;
-                    } else {
-                        throwUnexpectedTokenException(c);
-                    }
+                case 'a':
+                case 'b':
+                case 'c':
+                case 'd':
+                case 'e':
                 case 'f':
                     if (hasEnough(5) && followWord("false")) {
                         advance(5);
                         return Tokens.FALSE;
-                    } else {
-                        throwUnexpectedTokenException(c);
                     }
+                case 'g':
+                case 'h':
+                case 'i':
+                case 'j':
+                case 'k':
+                case 'l':
+                case 'm':
+                case 'n':
+                case 'o':
+                case 'p':
+                case 'q':
+                case 'r':
+                case 's':
+                case 't':
+                    if (hasEnough(4) && followWord("true")) {
+                        advance(4);
+                        return Tokens.TRUE;
+                    }
+                case 'u':
+                case 'v':
+                case 'w':
+                case 'x':
+                case 'y':
+                case 'z':
+                case 'A':
+                case 'B':
+                case 'C':
+                case 'D':
+                case 'E':
+                case 'F':
+                case 'G':
+                case 'H':
+                case 'I':
+                case 'J':
+                case 'K':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'O':
+                case 'P':
+                case 'Q':
+                case 'R':
+                case 'S':
+                case 'T':
+                case 'U':
+                case 'V':
+                case 'W':
+                case 'X':
+                case 'Y':
+                case 'Z':
+                case '_':
+                    throwUnexpectedTokenException(c);
                 case '!':
                     advance();
                     return Tokens.NOT;
