@@ -53,6 +53,33 @@ public class Tokenizer extends Iterator<Character> {
                 case '.':
                     advance();
                     return Tokens.DOT;
+                case '<':
+                    if (hasEnough(2)) {
+                        if (follow("<<", false)) {
+                            advance(2);
+                            return Tokens.L_SHIFT;
+                        } else if (follow("<=", false)) {
+                            advance(2);
+                            return Tokens.LTE;
+                        }
+                    }
+                    advance();
+                    return Tokens.LT;
+                case '>':
+                    if (hasEnough(3) && follow(">>>", false)) {
+                        advance(3);
+                        return Tokens.UNSIGNED_R_SHIFT;
+                    } else if (hasEnough(2)) {
+                        if (follow(">>", false)) {
+                            advance(2);
+                            return Tokens.R_SHIFT;
+                        } else if (follow(">=", false)) {
+                            advance(2);
+                            return Tokens.GTE;
+                        }
+                    }
+                    advance();
+                    return Tokens.GT;
                 case '0':
                 case '1':
                 case '2':
@@ -160,7 +187,11 @@ public class Tokenizer extends Iterator<Character> {
     }
 
     private boolean followWord(String word) {
-        char[] chars = word.toCharArray();
+        return follow(word, true);
+    }
+
+    private boolean follow(String string, boolean isWord) {
+        char[] chars = string.toCharArray();
         int length = chars.length;
         if (!hasEnough(length)) {
             return false;
@@ -170,7 +201,7 @@ public class Tokenizer extends Iterator<Character> {
                 return false;
             }
         }
-        if (hasEnough(length + 1)) {
+        if (isWord && hasEnough(length + 1)) {
             return !isIdentifierChar(peek(length));
         }
         return true;

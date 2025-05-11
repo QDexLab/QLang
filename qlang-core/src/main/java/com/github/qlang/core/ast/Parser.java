@@ -2,6 +2,8 @@ package com.github.qlang.core.ast;
 
 import com.github.qlang.core.ast.node.BitReverseOp;
 import com.github.qlang.core.ast.node.False;
+import com.github.qlang.core.ast.node.LShiftOp;
+import com.github.qlang.core.ast.node.RShiftOp;
 import com.github.qlang.core.ast.node.True;
 import com.github.qlang.core.ast.node.DivOp;
 import com.github.qlang.core.ast.node.MinusOp;
@@ -14,6 +16,7 @@ import com.github.qlang.core.ast.node.Num;
 import com.github.qlang.core.ast.node.PlusOp;
 import com.github.qlang.core.ast.node.PosOp;
 import com.github.qlang.core.ast.node.PowOp;
+import com.github.qlang.core.ast.node.URShiftOp;
 import com.github.qlang.core.ast.token.Token;
 import com.github.qlang.core.ast.token.TokenType;
 import com.github.qlang.core.ast.token.Tokenizer;
@@ -52,7 +55,24 @@ public class Parser extends Iterator<Token> {
     }
 
     public Node eat() {
-        return eatPlusMinus();
+        return eatShift();
+    }
+
+    public Node eatShift() {
+        Node left = eatPlusMinus();
+        while (peek().in(TokenType.L_SHIFT, TokenType.R_SHIFT, TokenType.UNSIGNED_R_SHIFT)) {
+            Token op = peek();
+            advance();
+            Node right = eatPlusMinus();
+            if (op.is(TokenType.L_SHIFT)) {
+                left = new LShiftOp(left, right);
+            } else if (op.is(TokenType.R_SHIFT)) {
+                left = new RShiftOp(left, right);
+            } else if (op.is(TokenType.UNSIGNED_R_SHIFT)) {
+                left = new URShiftOp(left, right);
+            }
+        }
+        return left;
     }
 
     public Node eatPlusMinus() {

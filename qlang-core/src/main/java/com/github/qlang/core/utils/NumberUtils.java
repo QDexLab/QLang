@@ -57,6 +57,30 @@ public class NumberUtils {
         }
     }
 
+    public static Number leftShift(Number number, Number shift) {
+        if (NumberUtils.isInteger(number) && NumberUtils.isInteger(shift)) {
+            return number.longValue() << shift.longValue();
+        } else {
+            return null;
+        }
+    }
+
+    public static Number rightShift(Number number, Number shift) {
+        if (NumberUtils.isInteger(number) && NumberUtils.isInteger(shift)) {
+            return number.longValue() >> shift.longValue();
+        } else {
+            return null;
+        }
+    }
+
+    public static Number unsignedRightShift(Number number, Number shift) {
+        if (NumberUtils.isInteger(number) && NumberUtils.isInteger(shift)) {
+            return number.longValue() >>> shift.longValue();
+        } else {
+            return null;
+        }
+    }
+
     public static boolean isInteger(Number number) {
         if (number == null) {
             return false;

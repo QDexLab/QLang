@@ -11,6 +11,13 @@ public class Tokens {
     public static final Token MOD = newSymbol(TokenType.MOD);
     public static final Token POW = newSymbol(TokenType.POW);
     public static final Token BIT_REVERSE = newSymbol(TokenType.BIT_REVERSE);
+    public static final Token L_SHIFT = newSymbol(TokenType.L_SHIFT);
+    public static final Token R_SHIFT = newSymbol(TokenType.R_SHIFT);
+    public static final Token UNSIGNED_R_SHIFT = newSymbol(TokenType.UNSIGNED_R_SHIFT);
+    public static final Token LT = newSymbol(TokenType.LT);
+    public static final Token LTE = newSymbol(TokenType.LTE);
+    public static final Token GT = newSymbol(TokenType.GT);
+    public static final Token GTE = newSymbol(TokenType.GTE);
     public static final Token DOT = newSymbol(TokenType.DOT);
     public static final Token TRUE = newSymbol(TokenType.TRUE);
     public static final Token FALSE = newSymbol(TokenType.FALSE);
