@@ -153,7 +153,16 @@ public class Tokenizer extends Iterator<Character> {
                 case 'Z':
                 case '_':
                     throwUnexpectedTokenException(c);
+                case '=':
+                    if (hasEnough(2) && follow("==", false)) {
+                        advance(2);
+                        return Tokens.EQ;
+                    }
                 case '!':
+                    if (hasEnough(2) && follow("!=", false)) {
+                        advance(2);
+                        return Tokens.NEQ;
+                    }
                     advance();
                     return Tokens.NOT;
 

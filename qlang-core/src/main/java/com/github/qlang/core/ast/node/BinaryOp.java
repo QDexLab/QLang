@@ -3,8 +3,8 @@ package com.github.qlang.core.ast.node;
 import com.github.qlang.core.ast.Context;
 
 public abstract class BinaryOp extends Node {
-    private final Node left;
-    private final Node right;
+    protected final Node left;
+    protected final Node right;
 
     public BinaryOp(Node left, Node right) {
         this.left = left;

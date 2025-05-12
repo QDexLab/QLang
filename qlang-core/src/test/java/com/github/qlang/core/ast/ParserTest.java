@@ -110,6 +110,46 @@ class ParserTest {
     }
 
     @Test
+    void testCompare() {
+        assertEquals(true, eval("1==1"));
+        assertEquals(false, eval("5.1>5==false "));
+        assertEquals(true, eval("5.1>5==true "));
+        // 基础相等测试
+        assertEquals(true, eval("1 == 1"));
+        assertEquals(false, eval("1 == 2"));
+        assertEquals(true, eval("0==-0"));
+
+        // 不等运算符测试
+        assertEquals(true, eval("3 != 2"));
+        assertEquals(false, eval("5 != 5"));
+        assertEquals(true, eval("-5 != 5"));
+
+        // 大小比较测试
+        assertEquals(true, eval("5 > 3"));
+        assertEquals(false, eval("3 > 5"));
+        assertEquals(true, eval("-2 > -5"));
+        assertEquals(true, eval("3 < 5"));
+        assertEquals(false, eval("5 < 3"));
+        assertEquals(true, eval("-5 < -2"));
+
+        // 边界值测试
+        assertEquals(true, eval("2147483647 == 2147483647"));
+        assertEquals(true, eval("9223372036854775807 == 9223372036854775807"));
+        assertEquals(false, eval("9223372036854775807 == 9223372036854775807 - 1"));
+
+        // 复合比较测试
+        assertEquals(true, eval("5 >= 5"));
+        assertEquals(true, eval("6 >= 3"));
+        assertEquals(false, eval("2 >= 3"));
+        assertEquals(true, eval("3 <= 5"));
+        assertEquals(true, eval("5 <= 5"));
+        assertEquals(false, eval("6 <= 5"));
+
+        // 类型转换测试
+        assertEquals(true, eval("10 == 10.0"));   // 整型浮点隐式转换
+    }
+
+    @Test
     void testBoolean() {
         assertEquals(true, eval("true"));
         assertEquals(false, eval("false"));

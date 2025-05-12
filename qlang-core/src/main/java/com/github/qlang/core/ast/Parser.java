@@ -1,8 +1,14 @@
 package com.github.qlang.core.ast;
 
 import com.github.qlang.core.ast.node.BitReverseOp;
+import com.github.qlang.core.ast.node.EqOp;
 import com.github.qlang.core.ast.node.False;
+import com.github.qlang.core.ast.node.GtOp;
+import com.github.qlang.core.ast.node.GteOp;
 import com.github.qlang.core.ast.node.LShiftOp;
+import com.github.qlang.core.ast.node.LtOp;
+import com.github.qlang.core.ast.node.LteOp;
+import com.github.qlang.core.ast.node.NeqOp;
 import com.github.qlang.core.ast.node.RShiftOp;
 import com.github.qlang.core.ast.node.True;
 import com.github.qlang.core.ast.node.DivOp;
@@ -54,11 +60,45 @@ public class Parser extends Iterator<Token> {
         return eat;
     }
 
-    public Node eat() {
-        return eatShift();
+    private Node eat() {
+        return eatEqual();
     }
 
-    public Node eatShift() {
+    private Node eatEqual() {
+        Node left = eatCompare();
+        while (peek().in(TokenType.EQ, TokenType.NEQ)) {
+            Token op = peek();
+            advance();
+            Node right = eatCompare();
+            if (op.is(TokenType.EQ)) {
+                left = new EqOp(left, right);
+            } else if (op.is(TokenType.NEQ)) {
+                left = new NeqOp(left, right);
+            }
+        }
+        return left;
+    }
+
+    private Node eatCompare() {
+        Node left = eatShift();
+        while (peek().in(TokenType.LT, TokenType.LTE, TokenType.GT, TokenType.GTE)) {
+            Token op = peek();
+            advance();
+            Node right = eatShift();
+            if (op.is(TokenType.LT)) {
+                left = new LtOp(left, right);
+            } else if (op.is(TokenType.LTE)) {
+                left = new LteOp(left, right);
+            } else if (op.is(TokenType.GT)) {
+                left = new GtOp(left, right);
+            } else if (op.is(TokenType.GTE)) {
+                left = new GteOp(left, right);
+            }
+        }
+        return left;
+    }
+
+    private Node eatShift() {
         Node left = eatPlusMinus();
         while (peek().in(TokenType.L_SHIFT, TokenType.R_SHIFT, TokenType.UNSIGNED_R_SHIFT)) {
             Token op = peek();
@@ -75,7 +115,7 @@ public class Parser extends Iterator<Token> {
         return left;
     }
 
-    public Node eatPlusMinus() {
+    private Node eatPlusMinus() {
         Node left = eatMulDivMod();
         while (peek().in(TokenType.PLUS, TokenType.MINUS)) {
             Token op = peek();

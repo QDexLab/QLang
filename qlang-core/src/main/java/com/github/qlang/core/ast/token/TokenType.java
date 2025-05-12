@@ -17,6 +17,8 @@ public class TokenType {
     public static final String LTE = "LTE";
     public static final String GT = "GT";
     public static final String GTE = "GTE";
+    public static final String EQ = "EQ";
+    public static final String NEQ = "NEQ";
     public static final String DOT = "DOT";
     public static final String LPAREN = "LPAREN";
     public static final String RPAREN = "RPAREN";

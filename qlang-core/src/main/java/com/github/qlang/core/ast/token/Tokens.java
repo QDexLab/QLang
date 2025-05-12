@@ -18,6 +18,8 @@ public class Tokens {
     public static final Token LTE = newSymbol(TokenType.LTE);
     public static final Token GT = newSymbol(TokenType.GT);
     public static final Token GTE = newSymbol(TokenType.GTE);
+    public static final Token EQ = newSymbol(TokenType.EQ);
+    public static final Token NEQ = newSymbol(TokenType.NEQ);
     public static final Token DOT = newSymbol(TokenType.DOT);
     public static final Token TRUE = newSymbol(TokenType.TRUE);
     public static final Token FALSE = newSymbol(TokenType.FALSE);
