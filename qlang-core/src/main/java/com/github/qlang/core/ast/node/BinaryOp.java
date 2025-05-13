@@ -15,7 +15,10 @@ public abstract class BinaryOp extends Node {
     public Object eval(Context context) {
         Object leftValue = left.eval(context);
         Object rightValue = right.eval(context);
-        return doEval(context, leftValue, rightValue);
+        if (leftValue != null && rightValue != null) {
+            return doEval(context, leftValue, rightValue);
+        }
+        return null;
     }
 
     protected abstract Object doEval(Context context, Object leftValue, Object rightValue);
