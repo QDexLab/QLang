@@ -11,11 +11,11 @@ public class RShiftOp extends BinaryOp {
 
     @Override
     protected Object doEval(Context context, Object leftValue, Object rightValue) {
-        if (leftValue instanceof QNumber && rightValue instanceof QNumber && ((QNumber) rightValue).isInt()) {
-            return ((QNumber) leftValue).rightShift(((QNumber) rightValue).intValue());
+        if (leftValue instanceof QNumber && rightValue instanceof QNumber) {
+            return ((QNumber) leftValue).rightShift(((QNumber) rightValue));
         }
         throw new EvalException(
-                "shift operator must be number and integer number: "
+                "shift only supported number, "
                         + "leftValue: " + leftValue
                         + ", rightValue: " + rightValue
         );

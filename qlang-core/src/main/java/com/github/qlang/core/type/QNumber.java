@@ -54,12 +54,12 @@ public class QNumber implements Comparable<QNumber> {
         return new QNumber(value.remainder(other.value));
     }
 
-    public QNumber leftShift(int shift) {
-        return new QNumber(value.toBigIntegerExact().shiftLeft(shift));
+    public QNumber leftShift(QNumber shift) {
+        return new QNumber(value.toBigIntegerExact().shiftLeft(shift.value.intValueExact()));
     }
 
-    public QNumber rightShift(int shift) {
-        return new QNumber(value.toBigIntegerExact().shiftRight(shift));
+    public QNumber rightShift(QNumber shift) {
+        return new QNumber(value.toBigIntegerExact().shiftRight(shift.value.intValueExact()));
     }
 
     public QNumber power(QNumber other) {
