@@ -8,7 +8,7 @@ public class TokenType {
     public static final String MUL = "MUL";
     public static final String DIV = "DIV";
     public static final String MOD = "MOD";
-    public static final String POW = "POW";
+    public static final String POW = "POW"; // 参照Python(**)
     public static final String BIT_REVERSE = "BIT_REVERSE";
     public static final String L_SHIFT = "L_SHIFT";
     public static final String R_SHIFT = "R_SHIFT";
@@ -26,6 +26,6 @@ public class TokenType {
     public static final String NOT = "NOT";
     public static final String AND = "AND";
     public static final String OR = "OR";
-    public static final String XOR = "XOR";
+    public static final String XOR = "XOR"; // ^
 
 }

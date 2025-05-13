@@ -32,12 +32,12 @@ class ParserTest {
         assertNumber(0.125, eval("0.5 * 0.25"));
         assertNumber(15L, eval("10 - -5"));
         assertNumber(5L, eval("10 - + - -5"));
-        assertNumber(9L, eval("2^3 + 4 % 3"));
+        assertNumber(9L, eval("2**3 + 4 % 3"));
         // 复杂表达式
-        assertNumber(new BigDecimal("13").divide(new BigDecimal("3"), MathContext.DECIMAL128).pow(2), eval("( (3 + 5 * 2) / (4 - 1) ) ^ 2"));
+        assertNumber(new BigDecimal("13").divide(new BigDecimal("3"), MathContext.DECIMAL128).pow(2), eval("( (3 + 5 * 2) / (4 - 1) ) ** 2"));
         assertNumber(12.8, eval("(1.5 + 2.5) * (3.2 - 4.8) / (-0.5)"));
         assertNumber(13L, eval("2 * (3 + 4) / (5 % 3) + 6"));
-        assertNumber(new BigDecimal("40").divide(new BigDecimal("6"), MathContext.DECIMAL128), eval("( (10 - 5) * 2^3 ) / (6 + 4 % 2)"));
+        assertNumber(new BigDecimal("40").divide(new BigDecimal("6"), MathContext.DECIMAL128), eval("( (10 - 5) * 2**3 ) / (6 + 4 % 2)"));
         assertNumber(2L, eval("1--1"));
         assertNumber(-2L, eval("---1-++--1"));
 

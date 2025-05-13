@@ -36,6 +36,10 @@ public class Tokenizer extends Iterator<Character> {
                     advance();
                     return Tokens.MINUS;
                 case '*':
+                    if (hasEnough(2) && follow("**", false)) {
+                        advance(2);
+                        return Tokens.POW;
+                    }
                     advance();
                     return Tokens.MUL;
                 case '/':
@@ -46,7 +50,7 @@ public class Tokenizer extends Iterator<Character> {
                     return Tokens.MOD;
                 case '^':
                     advance();
-                    return Tokens.POW;
+                    return Tokens.XOR;
                 case '~':
                     advance();
                     return Tokens.BIT_REVERSE;
