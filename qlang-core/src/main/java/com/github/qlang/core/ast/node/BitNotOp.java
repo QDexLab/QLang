@@ -4,8 +4,8 @@ import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.exception.EvalException;
 import com.github.qlang.core.type.QNumber;
 
-public class BitReverseOp extends UnaryOp {
-    public BitReverseOp(Node node) {
+public class BitNotOp extends UnaryOp {
+    public BitNotOp(Node node) {
         super(node);
     }
 

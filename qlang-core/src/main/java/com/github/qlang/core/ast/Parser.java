@@ -1,6 +1,6 @@
 package com.github.qlang.core.ast;
 
-import com.github.qlang.core.ast.node.BitReverseOp;
+import com.github.qlang.core.ast.node.BitNotOp;
 import com.github.qlang.core.ast.node.DivOp;
 import com.github.qlang.core.ast.node.EqOp;
 import com.github.qlang.core.ast.node.False;
@@ -170,9 +170,9 @@ public class Parser extends Iterator<Token> {
         } else if (op.is(TokenType.NOT)) {
             advance();
             return new NotOp(eatPosNegNot());
-        } else if (op.is(TokenType.BIT_REVERSE)) {
+        } else if (op.is(TokenType.BIT_NOT)) {
             advance();
-            return new BitReverseOp(eatPosNegNot());
+            return new BitNotOp(eatPosNegNot());
         } else {
             return eatUnit();
         }
