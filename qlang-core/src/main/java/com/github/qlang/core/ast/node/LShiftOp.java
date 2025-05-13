@@ -2,7 +2,7 @@ package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.exception.EvalException;
-import com.github.qlang.core.utils.NumberUtils;
+import com.github.qlang.core.type.QNumber;
 
 public class LShiftOp extends BinaryOp {
     public LShiftOp(Node left, Node right) {
@@ -11,11 +11,11 @@ public class LShiftOp extends BinaryOp {
 
     @Override
     protected Object doEval(Context context, Object leftValue, Object rightValue) {
-        if (leftValue instanceof Number && rightValue instanceof Number) {
-            return NumberUtils.leftShift((Number) leftValue, (Number) rightValue);
+        if (leftValue instanceof QNumber && rightValue instanceof QNumber && ((QNumber) rightValue).isInt()) {
+            return ((QNumber) leftValue).leftShift(((QNumber) rightValue).intValue());
         }
         throw new EvalException(
-                "left shift only supported number, "
+                "shift operator must be number and integer number: "
                         + "leftValue: " + leftValue
                         + ", rightValue: " + rightValue
         );

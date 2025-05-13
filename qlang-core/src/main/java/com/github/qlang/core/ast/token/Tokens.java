@@ -13,7 +13,6 @@ public class Tokens {
     public static final Token BIT_REVERSE = newSymbol(TokenType.BIT_REVERSE);
     public static final Token L_SHIFT = newSymbol(TokenType.L_SHIFT);
     public static final Token R_SHIFT = newSymbol(TokenType.R_SHIFT);
-    public static final Token UNSIGNED_R_SHIFT = newSymbol(TokenType.UNSIGNED_R_SHIFT);
     public static final Token LT = newSymbol(TokenType.LT);
     public static final Token LTE = newSymbol(TokenType.LTE);
     public static final Token GT = newSymbol(TokenType.GT);

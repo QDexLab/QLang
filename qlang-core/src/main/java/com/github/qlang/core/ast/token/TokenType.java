@@ -12,7 +12,6 @@ public class TokenType {
     public static final String BIT_REVERSE = "BIT_REVERSE";
     public static final String L_SHIFT = "L_SHIFT";
     public static final String R_SHIFT = "R_SHIFT";
-    public static final String UNSIGNED_R_SHIFT = "UNSIGNED_R_SHIFT";
     public static final String LT = "LT";
     public static final String LTE = "LTE";
     public static final String GT = "GT";

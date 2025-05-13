@@ -66,10 +66,7 @@ public class Tokenizer extends Iterator<Character> {
                     advance();
                     return Tokens.LT;
                 case '>':
-                    if (hasEnough(3) && follow(">>>", false)) {
-                        advance(3);
-                        return Tokens.UNSIGNED_R_SHIFT;
-                    } else if (hasEnough(2)) {
+                    if (hasEnough(2)) {
                         if (follow(">>", false)) {
                             advance(2);
                             return Tokens.R_SHIFT;
