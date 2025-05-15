@@ -71,6 +71,18 @@ public class QNumber implements Comparable<QNumber> {
         return new QNumber(value.toBigIntegerExact().not());
     }
 
+    public QNumber and(QNumber other) {
+        return new QNumber(value.toBigIntegerExact().and(other.value.toBigIntegerExact()));
+    }
+
+    public QNumber or(QNumber other) {
+        return new QNumber(value.toBigIntegerExact().or(other.value.toBigIntegerExact()));
+    }
+
+    public QNumber xor(QNumber other) {
+        return new QNumber(value.toBigIntegerExact().xor(other.value.toBigIntegerExact()));
+    }
+
     public QNumber negate() {
         return new QNumber(value.negate());
     }

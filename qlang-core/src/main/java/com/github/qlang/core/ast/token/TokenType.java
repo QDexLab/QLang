@@ -10,6 +10,9 @@ public class TokenType {
     public static final String MOD = "MOD";
     public static final String POW = "POW"; // 参照Python(**)
     public static final String BIT_NOT = "BIT_NOT";
+    public static final String BIT_AND = "BIT_AND";
+    public static final String BIT_XOR = "BIT_XOR";
+    public static final String BIT_OR = "BIT_OR";
     public static final String L_SHIFT = "L_SHIFT";
     public static final String R_SHIFT = "R_SHIFT";
     public static final String LT = "LT";

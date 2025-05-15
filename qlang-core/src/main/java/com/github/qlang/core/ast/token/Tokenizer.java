@@ -48,12 +48,16 @@ public class Tokenizer extends Iterator<Character> {
                 case '%':
                     advance();
                     return Tokens.MOD;
-                case '^':
-                    advance();
-                    return Tokens.XOR;
                 case '~':
                     advance();
                     return Tokens.BIT_NOT;
+                case '!':
+                    if (hasEnough(2) && follow("!=", false)) {
+                        advance(2);
+                        return Tokens.NEQ;
+                    }
+                    advance();
+                    return Tokens.NOT;
                 case '.':
                     advance();
                     return Tokens.DOT;
@@ -81,6 +85,27 @@ public class Tokenizer extends Iterator<Character> {
                     }
                     advance();
                     return Tokens.GT;
+                case '&':
+                    if (hasEnough(2) && follow("&&", false)) {
+                        advance(2);
+                        return Tokens.AND;
+                    }
+                    advance();
+                    return Tokens.BIT_AND;
+                case '|':
+                    if (hasEnough(2) && follow("||", false)) {
+                        advance(2);
+                        return Tokens.OR;
+                    }
+                    advance();
+                    return Tokens.BIT_OR;
+                case '^':
+                    if (hasEnough(2) && follow("^^", false)) {
+                        advance(2);
+                        return Tokens.XOR;
+                    }
+                    advance();
+                    return Tokens.BIT_XOR;
                 case '0':
                 case '1':
                 case '2':
@@ -159,13 +184,7 @@ public class Tokenizer extends Iterator<Character> {
                         advance(2);
                         return Tokens.EQ;
                     }
-                case '!':
-                    if (hasEnough(2) && follow("!=", false)) {
-                        advance(2);
-                        return Tokens.NEQ;
-                    }
-                    advance();
-                    return Tokens.NOT;
+                    throwUnexpectedTokenException(c);
 
                 default:
                     throwUnexpectedTokenException(c);

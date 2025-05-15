@@ -1,6 +1,10 @@
 package com.github.qlang.core.ast;
 
+import com.github.qlang.core.ast.node.AndOp;
+import com.github.qlang.core.ast.node.BitAndOp;
 import com.github.qlang.core.ast.node.BitNotOp;
+import com.github.qlang.core.ast.node.BitOrOp;
+import com.github.qlang.core.ast.node.BitXorOp;
 import com.github.qlang.core.ast.node.DivOp;
 import com.github.qlang.core.ast.node.EqOp;
 import com.github.qlang.core.ast.node.False;
@@ -17,11 +21,13 @@ import com.github.qlang.core.ast.node.NeqOp;
 import com.github.qlang.core.ast.node.Node;
 import com.github.qlang.core.ast.node.NotOp;
 import com.github.qlang.core.ast.node.Num;
+import com.github.qlang.core.ast.node.OrOp;
 import com.github.qlang.core.ast.node.PlusOp;
 import com.github.qlang.core.ast.node.PosOp;
 import com.github.qlang.core.ast.node.PowOp;
 import com.github.qlang.core.ast.node.RShiftOp;
 import com.github.qlang.core.ast.node.True;
+import com.github.qlang.core.ast.node.XorOp;
 import com.github.qlang.core.ast.token.Token;
 import com.github.qlang.core.ast.token.TokenType;
 import com.github.qlang.core.ast.token.Tokenizer;
@@ -60,7 +66,67 @@ public class Parser extends Iterator<Token> {
     }
 
     private Node eat() {
-        return eatEqual();
+        return earXor();
+    }
+
+    private Node earXor() {
+        Node left = earOr();
+        while (peek().in(TokenType.XOR)) {
+            advance();
+            Node right = earOr();
+            left = new XorOp(left, right);
+        }
+        return left;
+    }
+
+    private Node earOr() {
+        Node left = earAnd();
+        while (peek().in(TokenType.OR)) {
+            advance();
+            Node right = earAnd();
+            left = new OrOp(left, right);
+        }
+        return left;
+    }
+
+    private Node earAnd() {
+        Node left = earBitOr();
+        while (peek().in(TokenType.AND)) {
+            advance();
+            Node right = earBitOr();
+            left = new AndOp(left, right);
+        }
+        return left;
+    }
+
+    private Node earBitOr() {
+        Node left = earBitXor();
+        while (peek().in(TokenType.BIT_OR)) {
+            advance();
+            Node right = earBitXor();
+            left = new BitOrOp(left, right);
+        }
+        return left;
+    }
+
+    private Node earBitXor() {
+        Node left = earBitAnd();
+        while (peek().in(TokenType.BIT_XOR)) {
+            advance();
+            Node right = earBitAnd();
+            left = new BitXorOp(left, right);
+        }
+        return left;
+    }
+
+    private Node earBitAnd() {
+        Node left = eatEqual();
+        while (peek().in(TokenType.BIT_AND)) {
+            advance();
+            Node right = eatEqual();
+            left = new BitAndOp(left, right);
+        }
+        return left;
     }
 
     private Node eatEqual() {

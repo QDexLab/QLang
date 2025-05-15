@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParserTest {
@@ -18,7 +19,8 @@ class ParserTest {
 
     @BeforeEach
     void setUp() {
-        context = new Context() {};
+        context = new Context() {
+        };
     }
 
     @Test
@@ -54,16 +56,16 @@ class ParserTest {
         assertNumber(new BigDecimal("1.57079632679489661923"), eval("3.14159265358979323846 / 2"));
 
         // 空格与格式变化
-        assertNumber(3L+4*2/(1-5), eval("3+4*2/(1-5)"));
-        assertNumber(3L + 4 * 2 / ( 1 -5 ), eval("3 + 4 * 2 / ( 1 -5 )"));
-        assertNumber(5L   -  3  *  2, eval(" 5   -  3  *  2"));
-        assertNumber(( ( 3L + 2 ) * 5 ), eval("( ( 3 + 2 ) * 5 )"));
+        assertNumber(3L + 4 * 2 / (1 - 5), eval("3+4*2/(1-5)"));
+        assertNumber(3L + 4 * 2 / (1 - 5), eval("3 + 4 * 2 / ( 1 -5 )"));
+        assertNumber(5L - 3 * 2, eval(" 5   -  3  *  2"));
+        assertNumber(((3L + 2) * 5), eval("( ( 3 + 2 ) * 5 )"));
 
         // 非法表达式（需捕获错误）
-        assertThrows(ParseException.class, () ->eval("3 + * 4"));
-        assertThrows(ParseException.class, () ->eval("(5 + 3 "));
-        assertThrows(ParseException.class, () ->eval("2.3.4 + 5"));
-        assertThrows(TokenException.class, () ->eval("abc + 5"));
+        assertThrows(ParseException.class, () -> eval("3 + * 4"));
+        assertThrows(ParseException.class, () -> eval("(5 + 3 "));
+        assertThrows(ParseException.class, () -> eval("2.3.4 + 5"));
+        assertThrows(TokenException.class, () -> eval("abc + 5"));
         assertThrows(ArithmeticException.class, () -> eval("5 + 4 % 0 "));
         /**
          * 边界条件与特殊值
@@ -106,6 +108,33 @@ class ParserTest {
         assertNumber((5L << 2) >> 1, eval("(5 << 2) >> 1")); // 5 → 20 → 10
         // 混合位移方向
         assertNumber((255L << 24) >> 16, eval("(255 << 24) >> 16")); // 0xFF000000 → 0xFF0000 (高位补0)
+    }
+
+    @Test
+    public void testAllBitwiseOperations() {
+        // 按位与测试
+        assertNumber(8, eval("8 & 12"));    // 8 & 12 = 8
+        assertNumber(1, eval("5 & 3"));     // 5 & 3 = 1
+        // 按位或测试
+        assertNumber(14, eval("10 | 12"));  // 10 | 12 = 14
+        assertNumber(7, eval("5 | 3"));     // 5 | 3 = 7
+        // 按位异或测试
+        assertNumber(6, eval("10 ^ 12"));   // 10 ^ 12 = 6
+        assertNumber(6, eval("5 ^ 3"));     // 5 ^ 3 = 6
+        // 按位取反测试
+        assertNumber(-11, eval("~10"));     // ~10 = -11
+        assertNumber(-6, eval("~5"));       // ~5 = -6
+        // 复合按位与运算
+        assertNumber(0, eval("(255 & 170) & 85"));          // 255&170=170 → 170&85=0
+        assertNumber(51, eval("(240 & 60) | (15 & 51)"));   // 240&60=48 | 15&51=3 → 48|3=51
+        // 嵌套异或运算
+        assertNumber(68, eval("(170 ^ 102) ^ 136"));        // 170^102=204 → 204^136=68
+        assertNumber(-86, eval("(~170) ^ 255"));            // ~170=85 → 85^255=170 → ~85=-86
+        // 混合运算链
+        assertNumber(9, eval("((12 | 10) & ~9) ^ 15"));     // 12|10=14 & ~9=6 → 6^15=9
+        // 长整型边界测试
+        assertNumber((-4294967296L & -281470681743360L) | 281474976710655L, eval("(-4294967296 & -281470681743360) | 281474976710655"));
+        assertNumber(~-4294967296L & -1L, eval("~-4294967296 & -1"));
     }
 
     private void assertNumber(Number expected, Object actual) {
@@ -166,14 +195,32 @@ class ParserTest {
         assertThrows(ParseException.class, () -> assertEquals(true, eval("true!")));
     }
 
+    @Test
+    public void testBooleanOperations() {
+        // 基础运算测试
+        assertEquals(true, eval("true && true"));
+        assertEquals(false, eval("false || false"));
+        assertEquals(true, eval("true ^^ false"));
+        assertEquals(false, eval("!true"));
+
+        // 复合运算测试
+        assertEquals(true, eval("(true || false) && (!false)"));
+        assertEquals(true, eval("(true && false) || (false ^^ true)"));
+        assertEquals(false, eval("!((false || true) && (false ^^ true))"));
+
+        // 多级嵌套运算
+        assertEquals(true, eval("!((true && (false || true)) ^^ (!false && true))"));
+        assertEquals(true, eval("((true ^^ false) || (false && true)) && (!false || true)"));
+    }
+
     private Object eval(String input) {
         return new Parser(input).parse().eval(context);
     }
 
     @Test
-    void name() {
+    void nullType() {
         QNumber a = null;
-        System.out.println(a instanceof QNumber);
-        System.out.println(null instanceof QNumber);
+        assertFalse(a instanceof QNumber);
+        assertFalse(null instanceof QNumber);
     }
 }
