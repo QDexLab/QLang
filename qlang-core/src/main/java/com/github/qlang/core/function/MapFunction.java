@@ -1,8 +1,7 @@
 package com.github.qlang.core.function;
 
-import com.github.qlang.core.type.QObject;
-import com.github.qlang.core.type.ValueWrapper;
 import com.github.qlang.core.exception.FunctionEvalException;
+import com.github.qlang.core.type.QObject;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,9 +15,9 @@ public class MapFunction implements Function {
         }
         Map<Object, Object> map = new LinkedHashMap<>();
         for (int i = 0; i < args.length; i = i + 2) {
-            Object key = args[i];
-            Object value = args[i + 1];
-            map.put(ValueWrapper.wrap(key), ValueWrapper.wrap(value));
+            QObject key = args[i];
+            QObject value = args[i + 1];
+            map.put(key, value);
         }
         // todo
         return null;
