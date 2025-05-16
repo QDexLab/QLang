@@ -40,4 +40,8 @@ public class Tokens {
     public static Token newNumber(String number) {
         return new Token.TokenImpl(number, TokenType.NUMBER);
     }
+
+    public static Token newString(String value) {
+        return new Token.TokenImpl(value, TokenType.STRING);
+    }
 }

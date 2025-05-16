@@ -28,6 +28,7 @@ import com.github.qlang.core.ast.node.PlusOp;
 import com.github.qlang.core.ast.node.PosOp;
 import com.github.qlang.core.ast.node.PowOp;
 import com.github.qlang.core.ast.node.RShiftOp;
+import com.github.qlang.core.ast.node.Str;
 import com.github.qlang.core.ast.node.True;
 import com.github.qlang.core.ast.node.XorOp;
 import com.github.qlang.core.ast.token.Token;
@@ -268,6 +269,8 @@ public class Parser extends Iterator<Token> {
             throw new ParseException("expected rparen, but: " + peek());
         } else if (token.is(TokenType.NUMBER)) {
             return new Num(token.getValue());
+        } else if (token.is(TokenType.STRING)) {
+            return new Str(token.getValue());
         } else if (token.is(TokenType.TRUE)) {
             return new True();
         } else if (token.is(TokenType.FALSE)) {

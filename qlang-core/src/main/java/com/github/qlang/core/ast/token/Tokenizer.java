@@ -112,6 +112,8 @@ public class Tokenizer extends Iterator<Character> {
                         return Tokens.ELVIS;
                     }
                     throwUnexpectedTokenException(c);
+                case '"':
+                    return nextString();
                 case '0':
                 case '1':
                 case '2':
@@ -201,6 +203,51 @@ public class Tokenizer extends Iterator<Character> {
             }
         }
         return Tokens.EOF;
+    }
+
+    private Token nextString() {
+        advance(); // skip "
+        char c;
+        boolean success = false;
+        StringBuilder sb = new StringBuilder();
+        while (has()) {
+            c = peek();
+            advance();
+            if (c == '"') {
+                success = true;
+                break;
+            } else if (c == '\\') {
+                // 转义
+                if (!has()) {
+                    throw new TokenException("Unterminated escape sequence");
+                }
+                char c1 = peek();
+                advance();
+                if (Character.isWhitespace(c1)) {
+                    throw new TokenException("Unterminated escape sequence");
+                } else if (c1 == 'n') {
+                    sb.append("\n");
+                } else if (c1 == 'r') {
+                    sb.append("\r");
+                } else if (c1 == 't') {
+                    sb.append("\t");
+                } else if (c1 == 'b') {
+                    sb.append("\b");
+                } else if (c1 == 'f') {
+                    sb.append("\f");
+                } else if (c1 == '0') {
+                    sb.append("\0");
+                } else {
+                    sb.append(c1);
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        if (success) {
+            return Tokens.newString(sb.toString());
+        }
+        throw new TokenException("Unterminated string");
     }
 
     private Token nextNumber() {

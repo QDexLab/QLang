@@ -219,6 +219,15 @@ class ParserTest {
         assertNumber(666, eval("(null?:null?:null)?:null?:(null?:666)"));
     }
 
+    @Test
+    void string() {
+        assertEquals("abc\bde\nfg\rhi\tjk\flm\0no\\pq\"rs\'tuvw", eval("\"abc\\bde\\nfg\\rhi\\tjk\\flm\\0no\\\\pq\\\"rs\\'tu\\v\\w\""));
+        assertThrows(TokenException.class, () -> eval("\"aaa"));
+        assertThrows(TokenException.class, () -> eval("\""));
+        assertThrows(TokenException.class, () -> eval("\"\\"));
+        assertThrows(TokenException.class, () -> eval("\"\\ "));
+    }
+
     private Object eval(String input) {
         return new Parser(input).parse().eval(context);
     }
