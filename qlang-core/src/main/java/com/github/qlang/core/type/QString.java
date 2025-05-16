@@ -2,7 +2,7 @@ package com.github.qlang.core.type;
 
 import java.util.Objects;
 
-public class QString extends QObject {
+public final class QString extends QObject {
 
     private final String value;
 
@@ -10,8 +10,8 @@ public class QString extends QObject {
         this.value = value;
     }
 
-    public static QString valueOf(String value) {
-        return new QString(value);
+    public static QString valueOf(CharSequence value) {
+        return new QString(value.toString());
     }
 
     public String value() {
