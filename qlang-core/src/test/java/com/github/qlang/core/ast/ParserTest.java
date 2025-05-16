@@ -221,6 +221,7 @@ class ParserTest {
 
     @Test
     void string() {
+        assertEquals("", eval("\"\""));
         assertEquals("abc\bde\nfg\rhi\tjk\flm\0no\\pq\"rs\'tuvw", eval("\"abc\\bde\\nfg\\rhi\\tjk\\flm\\0no\\\\pq\\\"rs\\'tu\\v\\w\""));
         assertThrows(TokenException.class, () -> eval("\"aaa"));
         assertThrows(TokenException.class, () -> eval("\""));
