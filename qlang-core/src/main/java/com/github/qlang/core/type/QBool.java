@@ -2,7 +2,7 @@ package com.github.qlang.core.type;
 
 import java.util.Objects;
 
-public class QBool extends QObject {
+public final class QBool extends QObject {
 
     public static final QBool TRUE = new QBool(true);
     public static final QBool FALSE = new QBool(false);
@@ -18,19 +18,19 @@ public class QBool extends QObject {
     }
 
     public QBool and(QBool other) {
-        return new QBool(this.value && other.value);
+        return valueOf(this.value && other.value);
     }
 
     public QBool or(QBool other) {
-        return new QBool(this.value || other.value);
+        return valueOf(this.value || other.value);
     }
 
     public QBool not() {
-        return new QBool(!value);
+        return valueOf(!value);
     }
 
     public QBool xor(QBool other) {
-        return new QBool(this.value ^ other.value);
+        return valueOf(this.value ^ other.value);
     }
 
     public boolean isTrue() {
