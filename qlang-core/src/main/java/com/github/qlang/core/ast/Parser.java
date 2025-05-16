@@ -6,6 +6,7 @@ import com.github.qlang.core.ast.node.BitNotOp;
 import com.github.qlang.core.ast.node.BitOrOp;
 import com.github.qlang.core.ast.node.BitXorOp;
 import com.github.qlang.core.ast.node.DivOp;
+import com.github.qlang.core.ast.node.ElvisOp;
 import com.github.qlang.core.ast.node.EqOp;
 import com.github.qlang.core.ast.node.False;
 import com.github.qlang.core.ast.node.GtOp;
@@ -20,6 +21,7 @@ import com.github.qlang.core.ast.node.NegOp;
 import com.github.qlang.core.ast.node.NeqOp;
 import com.github.qlang.core.ast.node.Node;
 import com.github.qlang.core.ast.node.NotOp;
+import com.github.qlang.core.ast.node.Null;
 import com.github.qlang.core.ast.node.Num;
 import com.github.qlang.core.ast.node.OrOp;
 import com.github.qlang.core.ast.node.PlusOp;
@@ -66,7 +68,17 @@ public class Parser extends Iterator<Token> {
     }
 
     private Node eat() {
-        return earXor();
+        return earElvis();
+    }
+
+    private Node earElvis() {
+        Node left = earXor();
+        while (peek().in(TokenType.ELVIS)) {
+            advance();
+            Node right = earXor();
+            left = new ElvisOp(left, right);
+        }
+        return left;
     }
 
     private Node earXor() {
@@ -260,6 +272,8 @@ public class Parser extends Iterator<Token> {
             return new True();
         } else if (token.is(TokenType.FALSE)) {
             return new False();
+        } else if (token.is(TokenType.NULL)) {
+            return new Null();
         } else {
             throw new ParseException("unexpected token: " + token);
         }

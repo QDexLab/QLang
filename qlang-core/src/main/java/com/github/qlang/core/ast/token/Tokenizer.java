@@ -106,6 +106,12 @@ public class Tokenizer extends Iterator<Character> {
                     }
                     advance();
                     return Tokens.BIT_XOR;
+                case '?':
+                    if (hasEnough(2) && follow("?:", false)) {
+                        advance(2);
+                        return Tokens.ELVIS;
+                    }
+                    throwUnexpectedTokenException(c);
                 case '0':
                 case '1':
                 case '2':
@@ -135,6 +141,10 @@ public class Tokenizer extends Iterator<Character> {
                 case 'l':
                 case 'm':
                 case 'n':
+                    if (hasEnough(4) && followWord("null")) {
+                        advance(4);
+                        return Tokens.NULL;
+                    }
                 case 'o':
                 case 'p':
                 case 'q':

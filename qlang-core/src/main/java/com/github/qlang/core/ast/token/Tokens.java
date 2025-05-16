@@ -2,6 +2,7 @@ package com.github.qlang.core.ast.token;
 
 public class Tokens {
     public static final Token EOF = newSymbol(TokenType.EOF);
+    public static final Token NULL = newSymbol(TokenType.NULL);
     public static final Token LPAREN = newSymbol(TokenType.LPAREN);
     public static final Token RPAREN = newSymbol(TokenType.RPAREN);
     public static final Token PLUS = newSymbol(TokenType.PLUS);
@@ -29,6 +30,7 @@ public class Tokens {
     public static final Token AND = newSymbol(TokenType.AND);
     public static final Token OR = newSymbol(TokenType.OR);
     public static final Token XOR = newSymbol(TokenType.XOR);
+    public static final Token ELVIS = newSymbol(TokenType.ELVIS);
 
 
     public static Token newSymbol(String tokenType) {

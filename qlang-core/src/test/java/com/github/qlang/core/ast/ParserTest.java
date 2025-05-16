@@ -213,6 +213,12 @@ class ParserTest {
         assertEquals(true, eval("((true ^^ false) || (false && true)) && (!false || true)"));
     }
 
+    @Test
+    void elvis() {
+        assertNumber(666, eval("null?:666?:777"));
+        assertNumber(666, eval("(null?:null?:null)?:null?:(null?:666)"));
+    }
+
     private Object eval(String input) {
         return new Parser(input).parse().eval(context);
     }

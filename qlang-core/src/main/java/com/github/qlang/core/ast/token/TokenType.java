@@ -2,6 +2,7 @@ package com.github.qlang.core.ast.token;
 
 public class TokenType {
     public static final String EOF = "EOF";
+    public static final String NULL = "NULL";
     public static final String NUMBER = "NUMBER";
     public static final String PLUS = "PLUS";
     public static final String MINUS = "MINUS";
@@ -30,5 +31,6 @@ public class TokenType {
     public static final String AND = "AND";
     public static final String OR = "OR";
     public static final String XOR = "XOR"; // ^
+    public static final String ELVIS = "ELVIS"; // ?:
 
 }
