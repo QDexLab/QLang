@@ -1,6 +1,7 @@
 package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
+import com.github.qlang.core.type.QBool;
 
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public class EqOp extends BinaryOp {
     public Object eval(Context context) {
         Object leftValue = left.eval(context);
         Object rightValue = right.eval(context);
-        return Objects.equals(leftValue, rightValue);
+        return QBool.valueOf(Objects.equals(leftValue, rightValue));
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.exception.EvalException;
+import com.github.qlang.core.type.QBool;
 
 public class NotOp extends UnaryOp {
     public NotOp(Node node) {
@@ -10,10 +11,10 @@ public class NotOp extends UnaryOp {
 
     @Override
     protected Object doEval(Object value, Context context) {
-        if (Boolean.TRUE.equals(value)) {
-            return Boolean.FALSE;
-        } else if (Boolean.FALSE.equals(value)) {
-            return Boolean.TRUE;
+        if (QBool.TRUE.equals(value)) {
+            return QBool.FALSE;
+        } else if (QBool.FALSE.equals(value)) {
+            return QBool.TRUE;
         }
         throw new EvalException("pos only supported boolean, value: " + value);
     }

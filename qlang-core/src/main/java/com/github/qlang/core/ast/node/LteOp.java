@@ -2,6 +2,7 @@ package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.exception.EvalException;
+import com.github.qlang.core.type.QBool;
 import com.github.qlang.core.type.QNumber;
 
 public class LteOp extends BinaryOp {
@@ -12,7 +13,7 @@ public class LteOp extends BinaryOp {
     @Override
     protected Object doEval(Context context, Object leftValue, Object rightValue) {
         if (leftValue instanceof QNumber && rightValue instanceof QNumber) {
-            return ((QNumber) leftValue).compareTo((QNumber) rightValue) <= 0;
+            return QBool.valueOf(((QNumber) leftValue).compareTo((QNumber) rightValue) <= 0);
         }
         throw new EvalException(
                 "less than equal only supported number, "

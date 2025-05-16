@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.Objects;
 
-public class QNumber implements Comparable<QNumber> {
+public class QNumber extends QObject implements Comparable<QNumber> {
     public static final QNumber ZERO = QNumber.valueOf("0");
     public static final QNumber ONE = QNumber.valueOf("1");
     public static final QNumber FIVE = QNumber.valueOf("5");

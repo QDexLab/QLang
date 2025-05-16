@@ -4,7 +4,9 @@ import com.github.qlang.core.ast.context.SimpleContext;
 import com.github.qlang.core.exception.ParseException;
 import com.github.qlang.core.exception.TokenException;
 import com.github.qlang.core.function.FunctionLoader;
+import com.github.qlang.core.type.QBool;
 import com.github.qlang.core.type.QNumber;
+import com.github.qlang.core.type.QString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +15,6 @@ import java.math.BigInteger;
 import java.math.MathContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -26,23 +27,23 @@ class ParserTest {
         for (int i = 0; i < 10; i++) {
             parent.setVariable("number_" + i, QNumber.valueOf(String.valueOf(i)));
         }
-        parent.setVariable("_a", 0);
-        parent.setVariable("_b", false);
-        parent.setVariable("_c", "hello");
+        parent.setVariable("_a", QNumber.ZERO);
+        parent.setVariable("_b", QBool.FALSE);
+        parent.setVariable("_c", QString.valueOf("hello"));
         context = new SimpleContext(parent);
-        context.setVariable("a", 1);
-        context.setVariable("b", true);
-        context.setVariable("c", "world");
+        context.setVariable("a", QNumber.ONE);
+        context.setVariable("b", QBool.TRUE);
+        context.setVariable("c", QString.valueOf("world"));
     }
 
     @Test
     void identifier() {
         assertNumber(0, eval("_a"));
-        assertEquals(false, eval("_b"));
-        assertEquals("hello", eval("_c"));
+        assertBool(false, eval("_b"));
+        assertString("hello", eval("_c"));
         assertNumber(1, eval("a"));
-        assertEquals(true, eval("b"));
-        assertEquals("world", eval("c"));
+        assertBool(true, eval("b"));
+        assertString("world", eval("c"));
         assertNull(eval("d"));
     }
 
@@ -166,52 +167,60 @@ class ParserTest {
         assertEquals(QNumber.valueOf(expected.toString()), actual);
     }
 
+    private void assertBool(Boolean expected, Object actual) {
+        assertEquals(expected == null ? null : QBool.valueOf(expected), actual);
+    }
+
+    private void assertString(String expected, Object actual) {
+        assertEquals(expected == null ? null : QString.valueOf(expected), actual);
+    }
+
     @Test
     void testCompare() {
-        assertEquals(true, eval("1==1"));
-        assertEquals(false, eval("5.1>5==false "));
-        assertEquals(true, eval("5.1>5==true "));
+        assertBool(true, eval("1==1"));
+        assertBool(false, eval("5.1>5==false "));
+        assertBool(true, eval("5.1>5==true "));
         // 基础相等测试
-        assertEquals(true, eval("1 == 1"));
-        assertEquals(false, eval("1 == 2"));
-        assertEquals(true, eval("0==-0"));
+        assertBool(true, eval("1 == 1"));
+        assertBool(false, eval("1 == 2"));
+        assertBool(true, eval("0==-0"));
 
         // 不等运算符测试
-        assertEquals(true, eval("3 != 2"));
-        assertEquals(false, eval("5 != 5"));
-        assertEquals(true, eval("-5 != 5"));
+        assertBool(true, eval("3 != 2"));
+        assertBool(false, eval("5 != 5"));
+        assertBool(true, eval("-5 != 5"));
 
         // 大小比较测试
-        assertEquals(true, eval("5 > 3"));
-        assertEquals(false, eval("3 > 5"));
-        assertEquals(true, eval("-2 > -5"));
-        assertEquals(true, eval("3 < 5"));
-        assertEquals(false, eval("5 < 3"));
-        assertEquals(true, eval("-5 < -2"));
+        assertBool(true, eval("5 > 3"));
+        assertBool(false, eval("3 > 5"));
+        assertBool(true, eval("-2 > -5"));
+        assertBool(true, eval("3 < 5"));
+        assertBool(false, eval("5 < 3"));
+        assertBool(true, eval("-5 < -2"));
 
         // 边界值测试
-        assertEquals(true, eval("2147483647 == 2147483647"));
-        assertEquals(true, eval("9223372036854775807 == 9223372036854775807"));
-        assertEquals(false, eval("9223372036854775807 == 9223372036854775807 - 1"));
+        assertBool(true, eval("2147483647 == 2147483647"));
+        assertBool(true, eval("9223372036854775807 == 9223372036854775807"));
+        assertBool(false, eval("9223372036854775807 == 9223372036854775807 - 1"));
 
         // 复合比较测试
-        assertEquals(true, eval("5 >= 5"));
-        assertEquals(true, eval("6 >= 3"));
-        assertEquals(false, eval("2 >= 3"));
-        assertEquals(true, eval("3 <= 5"));
-        assertEquals(true, eval("5 <= 5"));
-        assertEquals(false, eval("6 <= 5"));
+        assertBool(true, eval("5 >= 5"));
+        assertBool(true, eval("6 >= 3"));
+        assertBool(false, eval("2 >= 3"));
+        assertBool(true, eval("3 <= 5"));
+        assertBool(true, eval("5 <= 5"));
+        assertBool(false, eval("6 <= 5"));
 
         // 类型转换测试
-        assertEquals(true, eval("10 == 10.0"));   // 整型浮点隐式转换
+        assertBool(true, eval("10 == 10.0"));   // 整型浮点隐式转换
     }
 
     @Test
     void testBoolean() {
-        assertEquals(true, eval("true"));
-        assertEquals(false, eval("false"));
-        assertEquals(false, eval("!!!true"));
-        assertEquals(true, eval("!!!false"));
+        assertBool(true, eval("true"));
+        assertBool(false, eval("false"));
+        assertBool(false, eval("!!!true"));
+        assertBool(true, eval("!!!false"));
         // 异常情况
         assertNull(eval("true_"));
         assertNull(eval("true5"));
@@ -223,19 +232,19 @@ class ParserTest {
     @Test
     public void testBooleanOperations() {
         // 基础运算测试
-        assertEquals(true, eval("true && true"));
-        assertEquals(false, eval("false || false"));
-        assertEquals(true, eval("true ^^ false"));
-        assertEquals(false, eval("!true"));
+        assertBool(true, eval("true && true"));
+        assertBool(false, eval("false || false"));
+        assertBool(true, eval("true ^^ false"));
+        assertBool(false, eval("!true"));
 
         // 复合运算测试
-        assertEquals(true, eval("(true || false) && (!false)"));
-        assertEquals(true, eval("(true && false) || (false ^^ true)"));
-        assertEquals(false, eval("!((false || true) && (false ^^ true))"));
+        assertBool(true, eval("(true || false) && (!false)"));
+        assertBool(true, eval("(true && false) || (false ^^ true)"));
+        assertBool(false, eval("!((false || true) && (false ^^ true))"));
 
         // 多级嵌套运算
-        assertEquals(true, eval("!((true && (false || true)) ^^ (!false && true))"));
-        assertEquals(true, eval("((true ^^ false) || (false && true)) && (!false || true)"));
+        assertBool(true, eval("!((true && (false || true)) ^^ (!false && true))"));
+        assertBool(true, eval("((true ^^ false) || (false && true)) && (!false || true)"));
     }
 
     @Test
@@ -246,8 +255,8 @@ class ParserTest {
 
     @Test
     void string() {
-        assertEquals("", eval("\"\""));
-        assertEquals("abc\bde\nfg\rhi\tjk\flm\0no\\pq\"rs\'tuvw", eval("\"abc\\bde\\nfg\\rhi\\tjk\\flm\\0no\\\\pq\\\"rs\\'tu\\v\\w\""));
+        assertString("", eval("\"\""));
+        assertString("abc\bde\nfg\rhi\tjk\flm\0no\\pq\"rs\'tuvw", eval("\"abc\\bde\\nfg\\rhi\\tjk\\flm\\0no\\\\pq\\\"rs\\'tu\\v\\w\""));
         assertThrows(TokenException.class, () -> eval("\"aaa"));
         assertThrows(TokenException.class, () -> eval("\""));
         assertThrows(TokenException.class, () -> eval("\"\\"));
@@ -256,18 +265,12 @@ class ParserTest {
 
     @Test
     void function() {
+        // todo 不要使用这种方式加载
         FunctionLoader loader = new FunctionLoader();
         assertNumber(66, eval("abs ( -66)  "));
     }
 
     private Object eval(String input) {
         return new Parser(input).parse().eval(context);
-    }
-
-    @Test
-    void nullType() {
-        QNumber a = null;
-        assertFalse(a instanceof QNumber);
-        assertFalse(null instanceof QNumber);
     }
 }

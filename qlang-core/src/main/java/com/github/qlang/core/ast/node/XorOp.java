@@ -2,6 +2,7 @@ package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.exception.EvalException;
+import com.github.qlang.core.type.QBool;
 
 public class XorOp extends BinaryOp {
     public XorOp(Node left, Node right) {
@@ -10,8 +11,8 @@ public class XorOp extends BinaryOp {
 
     @Override
     protected Object doEval(Context context, Object leftValue, Object rightValue) {
-        if (leftValue instanceof Boolean && rightValue instanceof Boolean) {
-            return (Boolean) leftValue ^ (Boolean) rightValue;
+        if (leftValue instanceof QBool && rightValue instanceof QBool) {
+            return ((QBool) leftValue).xor((QBool) rightValue);
         }
         throw new EvalException(
                 "xor only supported bool, "

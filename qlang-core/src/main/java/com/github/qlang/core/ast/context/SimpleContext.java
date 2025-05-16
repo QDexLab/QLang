@@ -1,7 +1,7 @@
 package com.github.qlang.core.ast.context;
 
 import com.github.qlang.core.ast.Context;
-import com.github.qlang.core.type.ValueWrapper;
+import com.github.qlang.core.type.QObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
 public class SimpleContext implements Context {
 
     private final Context parent;
-    private final Map<String, Object> variableTable = new HashMap<>();
+    private final Map<String, QObject> variableTable = new HashMap<>();
 
     public SimpleContext() {
         this(null);
@@ -31,7 +31,7 @@ public class SimpleContext implements Context {
     }
 
     @Override
-    public void setVariable(String variable, Object value) {
-        variableTable.put(variable, ValueWrapper.wrap(value));
+    public void setVariable(String variable, QObject value) {
+        variableTable.put(variable, value);
     }
 }

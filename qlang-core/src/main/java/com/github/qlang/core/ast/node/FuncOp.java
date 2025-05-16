@@ -2,6 +2,7 @@ package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.function.Function;
+import com.github.qlang.core.type.ValueWrapper;
 
 public class FuncOp extends Node {
 
@@ -21,7 +22,7 @@ public class FuncOp extends Node {
             for (int i = 0; i < arguments.length; i++) {
                 args[i] = this.arguments[i].eval(context);
             }
-            return function.call(args);
+            return ValueWrapper.wrap(function.call(args));
         }
         throw new RuntimeException("function " + this.name + " not found");
     }
