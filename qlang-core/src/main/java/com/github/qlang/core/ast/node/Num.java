@@ -3,12 +3,9 @@ package com.github.qlang.core.ast.node;
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.exception.ParseException;
 import com.github.qlang.core.type.QNumber;
-
-import java.text.NumberFormat;
+import com.github.qlang.core.type.QObject;
 
 public class Num extends Node {
-
-    private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
 
     private final QNumber value;
 
@@ -21,7 +18,7 @@ public class Num extends Node {
     }
 
     @Override
-    public Object eval(Context context) {
+    public QObject eval(Context context) {
         return this.value;
     }
 }

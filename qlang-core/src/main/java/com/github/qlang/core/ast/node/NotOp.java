@@ -3,6 +3,7 @@ package com.github.qlang.core.ast.node;
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.exception.EvalException;
 import com.github.qlang.core.type.QBool;
+import com.github.qlang.core.type.QObject;
 
 public class NotOp extends UnaryOp {
     public NotOp(Node node) {
@@ -10,7 +11,7 @@ public class NotOp extends UnaryOp {
     }
 
     @Override
-    protected Object doEval(Object value, Context context) {
+    protected QObject doEval(QObject value, Context context) {
         if (QBool.TRUE.equals(value)) {
             return QBool.FALSE;
         } else if (QBool.FALSE.equals(value)) {

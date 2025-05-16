@@ -1,6 +1,7 @@
 package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
+import com.github.qlang.core.type.QObject;
 
 public class Identifier extends Node {
 
@@ -11,7 +12,7 @@ public class Identifier extends Node {
     }
 
     @Override
-    public Object eval(Context context) {
+    public QObject eval(Context context) {
         return context.getVariable(name);
     }
 }

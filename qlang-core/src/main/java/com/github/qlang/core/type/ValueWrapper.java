@@ -7,19 +7,20 @@ import java.util.Map;
 
 public class ValueWrapper {
 
-    public static Object wrap(Object value) {
+    public static QObject wrap(Object value) {
         if (value == null) {
             return null;
         } else if (value instanceof QObject) {
-            return value;
-        } else if (value instanceof QNumber || value instanceof String || value instanceof Boolean) {
-            return value;
-        } else if (value instanceof Map || value instanceof Collection) {
-            return value;
+            return (QObject) value;
+        } else if (value instanceof Boolean) {
+            return QBool.valueOf((Boolean) value);
         } else if (value instanceof CharSequence) {
-            return value.toString();
+            return QString.valueOf(value.toString());
         } else if (value instanceof Number) {
             return QNumber.valueOf(value.toString());
+        } else if (value instanceof Map || value instanceof Collection) {
+            // todo 实现
+            throw new EvalException("unsupported type: " + value.getClass() + ", value: " + value);
         } else {
             throw new EvalException("unsupported type: " + value.getClass() + ", value: " + value);
         }

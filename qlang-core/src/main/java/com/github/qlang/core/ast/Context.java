@@ -6,7 +6,7 @@ import com.github.qlang.core.type.QObject;
 
 public interface Context {
 
-    Object getVariable(String variable);
+    QObject getVariable(String variable);
 
     void setVariable(String variable, QObject value);
 

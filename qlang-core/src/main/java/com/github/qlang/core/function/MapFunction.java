@@ -1,5 +1,6 @@
 package com.github.qlang.core.function;
 
+import com.github.qlang.core.type.QObject;
 import com.github.qlang.core.type.ValueWrapper;
 import com.github.qlang.core.exception.FunctionEvalException;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 public class MapFunction implements Function {
 
     @Override
-    public Object call(Object[] args) {
+    public QObject call(QObject[] args) {
         if (args.length % 2 == 1) {
             throw new FunctionEvalException("MapFunction requires even number of arguments, but got " + args.length);
         }
@@ -19,6 +20,7 @@ public class MapFunction implements Function {
             Object value = args[i + 1];
             map.put(ValueWrapper.wrap(key), ValueWrapper.wrap(value));
         }
-        return map;
+        // todo
+        return null;
     }
 }

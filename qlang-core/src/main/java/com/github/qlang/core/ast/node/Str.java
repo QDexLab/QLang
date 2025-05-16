@@ -1,6 +1,7 @@
 package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
+import com.github.qlang.core.type.QObject;
 import com.github.qlang.core.type.QString;
 
 public class Str extends Node{
@@ -12,7 +13,7 @@ public class Str extends Node{
     }
 
     @Override
-    public Object eval(Context context) {
+    public QObject eval(Context context) {
         return value;
     }
 }

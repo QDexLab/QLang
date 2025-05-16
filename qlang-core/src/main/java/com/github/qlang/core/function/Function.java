@@ -1,5 +1,7 @@
 package com.github.qlang.core.function;
 
+import com.github.qlang.core.type.QObject;
+
 public interface Function {
-    Object call(Object[] args);
+    QObject call(QObject[] args);
 }

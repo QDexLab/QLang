@@ -1,6 +1,7 @@
 package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
+import com.github.qlang.core.type.QObject;
 
 public abstract class BinaryOp extends Node {
     protected final Node left;
@@ -12,14 +13,14 @@ public abstract class BinaryOp extends Node {
     }
 
     @Override
-    public Object eval(Context context) {
-        Object leftValue = left.eval(context);
-        Object rightValue = right.eval(context);
+    public QObject eval(Context context) {
+        QObject leftValue = left.eval(context);
+        QObject rightValue = right.eval(context);
         if (leftValue != null && rightValue != null) {
             return doEval(context, leftValue, rightValue);
         }
         return null;
     }
 
-    protected abstract Object doEval(Context context, Object leftValue, Object rightValue);
+    protected abstract QObject doEval(Context context, QObject leftValue, QObject rightValue);
 }

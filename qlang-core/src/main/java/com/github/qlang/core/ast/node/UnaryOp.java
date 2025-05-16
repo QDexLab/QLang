@@ -1,6 +1,7 @@
 package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
+import com.github.qlang.core.type.QObject;
 
 public abstract class UnaryOp extends Node {
 
@@ -11,13 +12,13 @@ public abstract class UnaryOp extends Node {
     }
 
     @Override
-    public Object eval(Context context) {
-        Object nodeValue = node.eval(context);
+    public QObject eval(Context context) {
+        QObject nodeValue = node.eval(context);
         if (nodeValue != null) {
             return doEval(nodeValue, context);
         }
         return null;
     }
 
-    protected abstract Object doEval(Object value, Context context);
+    protected abstract QObject doEval(QObject value, Context context);
 }

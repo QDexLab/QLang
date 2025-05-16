@@ -20,7 +20,7 @@ public class SimpleContext implements Context {
     }
 
     @Override
-    public Object getVariable(String variable) {
+    public QObject getVariable(String variable) {
         if (variableTable.containsKey(variable)) {
             return variableTable.get(variable);
         }

@@ -2,7 +2,7 @@ package com.github.qlang.core.ast.node;
 
 import com.github.qlang.core.ast.Context;
 import com.github.qlang.core.function.Function;
-import com.github.qlang.core.type.ValueWrapper;
+import com.github.qlang.core.type.QObject;
 
 public class FuncOp extends Node {
 
@@ -15,14 +15,14 @@ public class FuncOp extends Node {
     }
 
     @Override
-    public Object eval(Context context) {
+    public QObject eval(Context context) {
         Function function = context.getFunction(this.name);
         if (function != null) {
-            Object[] args = new Object[this.arguments.length];
+            QObject[] args = new QObject[this.arguments.length];
             for (int i = 0; i < arguments.length; i++) {
                 args[i] = this.arguments[i].eval(context);
             }
-            return ValueWrapper.wrap(function.call(args));
+            return function.call(args);
         }
         throw new RuntimeException("function " + this.name + " not found");
     }
