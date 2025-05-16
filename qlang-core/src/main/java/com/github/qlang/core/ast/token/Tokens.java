@@ -31,6 +31,7 @@ public class Tokens {
     public static final Token OR = newSymbol(TokenType.OR);
     public static final Token XOR = newSymbol(TokenType.XOR);
     public static final Token ELVIS = newSymbol(TokenType.ELVIS);
+    public static final Token COMMA = newSymbol(TokenType.COMMA);
 
 
     public static Token newSymbol(String tokenType) {

@@ -3,6 +3,7 @@ package com.github.qlang.core.ast;
 import com.github.qlang.core.ast.context.SimpleContext;
 import com.github.qlang.core.exception.ParseException;
 import com.github.qlang.core.exception.TokenException;
+import com.github.qlang.core.function.FunctionLoader;
 import com.github.qlang.core.type.QNumber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -251,6 +252,12 @@ class ParserTest {
         assertThrows(TokenException.class, () -> eval("\""));
         assertThrows(TokenException.class, () -> eval("\"\\"));
         assertThrows(TokenException.class, () -> eval("\"\\ "));
+    }
+
+    @Test
+    void function() {
+        FunctionLoader loader = new FunctionLoader();
+        assertNumber(66, eval("abs ( -66)  "));
     }
 
     private Object eval(String input) {

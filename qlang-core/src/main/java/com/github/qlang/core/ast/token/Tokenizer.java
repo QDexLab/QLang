@@ -61,6 +61,8 @@ public class Tokenizer extends Iterator<Character> {
                 case '.':
                     advance();
                     return Tokens.DOT;
+                case ',':
+                    return Tokens.COMMA;
                 case '<':
                     if (hasEnough(2)) {
                         if (follow("<<", false)) {
@@ -209,8 +211,8 @@ public class Tokenizer extends Iterator<Character> {
         StringBuilder sb = new StringBuilder();
         while (has()) {
             char c = peek();
-            advance();
             if (isIdentifierChar(c)) {
+                advance();
                 sb.append(c);
             } else {
                 break;

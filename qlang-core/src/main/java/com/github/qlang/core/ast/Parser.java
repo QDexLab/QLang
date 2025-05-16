@@ -9,6 +9,7 @@ import com.github.qlang.core.ast.node.DivOp;
 import com.github.qlang.core.ast.node.ElvisOp;
 import com.github.qlang.core.ast.node.EqOp;
 import com.github.qlang.core.ast.node.False;
+import com.github.qlang.core.ast.node.FuncOp;
 import com.github.qlang.core.ast.node.GtOp;
 import com.github.qlang.core.ast.node.GteOp;
 import com.github.qlang.core.ast.node.Identifier;
@@ -261,28 +262,59 @@ public class Parser extends Iterator<Token> {
     private Node eatUnit() {
         Token token = peek();
         advance();
-        if (Tokens.LPAREN.equals(token)) {
-            Node eat = eat();
-            if (Tokens.RPAREN.equals(peek())) {
-                advance(); // 跳过右括号
-                return eat;
+        if (token.is(TokenType.IDENTIFIER)) {
+            if (has() && peek().is(TokenType.LPAREN)) {
+                advance(); // 跳过参数左括号
+                return eatFunc(token.getValue());
             }
-            throw new ParseException("expected rparen, but: " + peek());
+            return new Identifier(token.getValue());
         } else if (token.is(TokenType.NUMBER)) {
             return new Num(token.getValue());
         } else if (token.is(TokenType.STRING)) {
             return new Str(token.getValue());
-        } else if (token.is(TokenType.IDENTIFIER)) {
-            return new Identifier(token.getValue());
         } else if (token.is(TokenType.TRUE)) {
             return new True();
         } else if (token.is(TokenType.FALSE)) {
             return new False();
         } else if (token.is(TokenType.NULL)) {
             return new Null();
+        } else if (Tokens.LPAREN.equals(token)) {
+            Node eat = eat();
+            if (Tokens.RPAREN.equals(peek())) {
+                advance(); // 跳过右括号
+                return eat;
+            }
+            throw new ParseException("expected rparen, but: " + peek());
         } else {
             throw new ParseException("unexpected token: " + token);
         }
+    }
+
+    private Node eatFunc(String funcName) {
+        boolean success = false;
+        boolean hasArgs = false;
+        List<Node> args = new ArrayList<>();
+        while (has()) {
+            Token op = peek();
+            if (op.is(TokenType.RPAREN)) {
+                success = true;
+                advance(); // 跳过参数右括号
+                break;
+            } else if (hasArgs) {
+                if (peek().in(TokenType.COMMA)) {
+                    advance();
+                } else {
+                    throw new ParseException("function parameter must be separated by comma");
+                }
+            } else {
+                args.add(eat());
+                hasArgs = true;
+            }
+        }
+        if (success) {
+            return new FuncOp(funcName, args.toArray(new Node[0]));
+        }
+        throw new ParseException("error while parsing function: " + funcName);
     }
 
     @Override

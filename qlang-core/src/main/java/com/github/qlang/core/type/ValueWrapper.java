@@ -1,7 +1,6 @@
-package com.github.qlang.core.ast.context;
+package com.github.qlang.core.type;
 
 import com.github.qlang.core.exception.EvalException;
-import com.github.qlang.core.type.QNumber;
 
 public class ValueWrapper {
 

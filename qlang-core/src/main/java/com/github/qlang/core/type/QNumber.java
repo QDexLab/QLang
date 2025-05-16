@@ -86,6 +86,11 @@ public class QNumber implements Comparable<QNumber> {
     public QNumber negate() {
         return new QNumber(value.negate());
     }
+
+    public QNumber abs() {
+        return new QNumber(value.abs());
+    }
+
     public boolean isInt() {
         return value.scale() <= 0 || value.signum() == 0;
     }
