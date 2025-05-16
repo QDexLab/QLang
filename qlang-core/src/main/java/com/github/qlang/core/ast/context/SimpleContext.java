@@ -31,6 +31,6 @@ public class SimpleContext implements Context {
 
     @Override
     public void setVariable(String variable, Object value) {
-        variableTable.put(variable, value);
+        variableTable.put(variable, ValueWrapper.wrap(value));
     }
 }

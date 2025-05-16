@@ -36,10 +36,10 @@ class ParserTest {
 
     @Test
     void identifier() {
-        assertEquals(0, eval("_a"));
+        assertNumber(0, eval("_a"));
         assertEquals(false, eval("_b"));
         assertEquals("hello", eval("_c"));
-        assertEquals(1, eval("a"));
+        assertNumber(1, eval("a"));
         assertEquals(true, eval("b"));
         assertEquals("world", eval("c"));
         assertNull(eval("d"));
