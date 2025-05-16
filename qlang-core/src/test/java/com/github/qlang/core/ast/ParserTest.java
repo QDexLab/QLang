@@ -1,5 +1,6 @@
 package com.github.qlang.core.ast;
 
+import com.github.qlang.core.ast.context.SimpleContext;
 import com.github.qlang.core.exception.ParseException;
 import com.github.qlang.core.exception.TokenException;
 import com.github.qlang.core.type.QNumber;
@@ -12,6 +13,7 @@ import java.math.MathContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParserTest {
@@ -19,8 +21,28 @@ class ParserTest {
 
     @BeforeEach
     void setUp() {
-        context = new Context() {
-        };
+        Context parent = new SimpleContext();
+        for (int i = 0; i < 10; i++) {
+            parent.setVariable("number_" + i, QNumber.valueOf(String.valueOf(i)));
+        }
+        parent.setVariable("_a", 0);
+        parent.setVariable("_b", false);
+        parent.setVariable("_c", "hello");
+        context = new SimpleContext(parent);
+        context.setVariable("a", 1);
+        context.setVariable("b", true);
+        context.setVariable("c", "world");
+    }
+
+    @Test
+    void identifier() {
+        assertEquals(0, eval("_a"));
+        assertEquals(false, eval("_b"));
+        assertEquals("hello", eval("_c"));
+        assertEquals(1, eval("a"));
+        assertEquals(true, eval("b"));
+        assertEquals("world", eval("c"));
+        assertNull(eval("d"));
     }
 
     @Test
@@ -61,11 +83,13 @@ class ParserTest {
         assertNumber(5L - 3 * 2, eval(" 5   -  3  *  2"));
         assertNumber(((3L + 2) * 5), eval("( ( 3 + 2 ) * 5 )"));
 
+        // 带变量计算
+        assertNumber(1, eval("number_3 + number_4 * number_2 / ( number_1 -number_5 )"));
+
         // 非法表达式（需捕获错误）
         assertThrows(ParseException.class, () -> eval("3 + * 4"));
         assertThrows(ParseException.class, () -> eval("(5 + 3 "));
         assertThrows(ParseException.class, () -> eval("2.3.4 + 5"));
-        assertThrows(TokenException.class, () -> eval("abc + 5"));
         assertThrows(ArithmeticException.class, () -> eval("5 + 4 % 0 "));
         /**
          * 边界条件与特殊值
@@ -188,11 +212,11 @@ class ParserTest {
         assertEquals(false, eval("!!!true"));
         assertEquals(true, eval("!!!false"));
         // 异常情况
-        assertThrows(TokenException.class, () -> assertEquals(true, eval("true_")));
-        assertThrows(TokenException.class, () -> assertEquals(true, eval("true5")));
-        assertThrows(TokenException.class, () -> assertEquals(true, eval("trued")));
-        assertThrows(TokenException.class, () -> assertEquals(true, eval("trueD")));
-        assertThrows(ParseException.class, () -> assertEquals(true, eval("true!")));
+        assertNull(eval("true_"));
+        assertNull(eval("true5"));
+        assertNull(eval("trued"));
+        assertNull(eval("trueD"));
+        assertThrows(ParseException.class, () -> eval("true!"));
     }
 
     @Test

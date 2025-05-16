@@ -39,4 +39,12 @@ class TokenizerTest {
         assertEquals(Tokens.FALSE, tokenizer.nextToken());
         assertEquals(Tokens.NOT, tokenizer.nextToken());
     }
+
+    @Test
+    void identifier() {
+        Tokenizer tokenizer = new Tokenizer("_abc hello world");
+        assertEquals(Tokens.newIdentifier("_abc"), tokenizer.nextToken());
+        assertEquals(Tokens.newIdentifier("hello"), tokenizer.nextToken());
+        assertEquals(Tokens.newIdentifier("world"), tokenizer.nextToken());
+    }
 }

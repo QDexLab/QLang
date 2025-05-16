@@ -44,4 +44,8 @@ public class Tokens {
     public static Token newString(String value) {
         return new Token.TokenImpl(value, TokenType.STRING);
     }
+
+    public static Token newIdentifier(String identifier) {
+        return new Token.TokenImpl(identifier, TokenType.IDENTIFIER);
+    }
 }

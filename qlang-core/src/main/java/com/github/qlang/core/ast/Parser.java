@@ -11,6 +11,7 @@ import com.github.qlang.core.ast.node.EqOp;
 import com.github.qlang.core.ast.node.False;
 import com.github.qlang.core.ast.node.GtOp;
 import com.github.qlang.core.ast.node.GteOp;
+import com.github.qlang.core.ast.node.Identifier;
 import com.github.qlang.core.ast.node.LShiftOp;
 import com.github.qlang.core.ast.node.LtOp;
 import com.github.qlang.core.ast.node.LteOp;
@@ -271,6 +272,8 @@ public class Parser extends Iterator<Token> {
             return new Num(token.getValue());
         } else if (token.is(TokenType.STRING)) {
             return new Str(token.getValue());
+        } else if (token.is(TokenType.IDENTIFIER)) {
+            return new Identifier(token.getValue());
         } else if (token.is(TokenType.TRUE)) {
             return new True();
         } else if (token.is(TokenType.FALSE)) {

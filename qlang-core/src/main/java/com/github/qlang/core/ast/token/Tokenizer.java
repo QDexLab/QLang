@@ -190,7 +190,7 @@ public class Tokenizer extends Iterator<Character> {
                 case 'Y':
                 case 'Z':
                 case '_':
-                    throwUnexpectedTokenException(c);
+                    return nextIdentifier();
                 case '=':
                     if (hasEnough(2) && follow("==", false)) {
                         advance(2);
@@ -203,6 +203,20 @@ public class Tokenizer extends Iterator<Character> {
             }
         }
         return Tokens.EOF;
+    }
+
+    private Token nextIdentifier() {
+        StringBuilder sb = new StringBuilder();
+        while (has()) {
+            char c = peek();
+            advance();
+            if (isIdentifierChar(c)) {
+                sb.append(c);
+            } else {
+                break;
+            }
+        }
+        return Tokens.newIdentifier(sb.toString());
     }
 
     private Token nextString() {
