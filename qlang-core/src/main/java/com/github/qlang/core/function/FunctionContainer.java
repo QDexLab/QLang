@@ -1,6 +1,6 @@
 package com.github.qlang.core.function;
 
-import com.github.qlang.core.exception.QLangException;
+import com.github.qlang.core.exception.InitializeException;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,10 +28,10 @@ public class FunctionContainer {
     public static void addFunction(Function function) {
         FunctionDefinition definition = function.getClass().getAnnotation(FunctionDefinition.class);
         if (definition == null) {
-            throw new QLangException("FunctionDefinition annotation not found: " + function.getClass().getName());
+            throw new InitializeException("FunctionDefinition annotation not found: " + function.getClass().getName());
         }
         if (functions.containsKey(definition.value())) {
-            throw new QLangException("Duplicate function name: " + definition.value());
+            throw new InitializeException("Duplicate function name: " + definition.value());
         }
         functions.put(definition.value(), function);
     }
