@@ -1,17 +1,38 @@
 package com.github.qlang.core.function;
 
+import com.github.qlang.core.exception.QLangException;
+
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 public class FunctionContainer {
 
     private static final Map<String, Function> functions = new LinkedHashMap<>();
 
+    public static void loadFunctions() {
+        ServiceLoader<FunctionLoader> loader = ServiceLoader.load(FunctionLoader.class);
+        for (FunctionLoader functionLoader : loader) {
+            List<Function> functions = functionLoader.loadFunctions();
+            if (functions != null) {
+                functions.forEach(FunctionContainer::addFunction);
+            }
+        }
+    }
+
     public static Function getFunction(String name) {
         return functions.get(name);
     }
 
-    public static void addFunction(String name, Function function) {
-        functions.put(name, function);
+    public static void addFunction(Function function) {
+        FunctionDefinition definition = function.getClass().getAnnotation(FunctionDefinition.class);
+        if (definition == null) {
+            throw new QLangException("FunctionDefinition annotation not found: " + function.getClass().getName());
+        }
+        if (functions.containsKey(definition.value())) {
+            throw new QLangException("Duplicate function name: " + definition.value());
+        }
+        functions.put(definition.value(), function);
     }
 }

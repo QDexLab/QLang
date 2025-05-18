@@ -1,11 +1,14 @@
-package com.github.qlang.core.function;
+package com.github.qlang.core.function.collection;
 
 import com.github.qlang.core.exception.FunctionEvalException;
+import com.github.qlang.core.function.Function;
+import com.github.qlang.core.function.FunctionDefinition;
 import com.github.qlang.core.type.QObject;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@FunctionDefinition("map")
 public class MapFunction implements Function {
 
     @Override

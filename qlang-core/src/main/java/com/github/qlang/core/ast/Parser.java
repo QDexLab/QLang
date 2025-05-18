@@ -38,11 +38,13 @@ import com.github.qlang.core.ast.token.TokenType;
 import com.github.qlang.core.ast.token.Tokenizer;
 import com.github.qlang.core.ast.token.Tokens;
 import com.github.qlang.core.exception.ParseException;
+import com.github.qlang.core.function.FunctionContainer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Parser extends Iterator<Token> {
+    private static volatile boolean initialized = false;
 
     public Parser(String input) {
         this(new Tokenizer(input));
@@ -50,6 +52,18 @@ public class Parser extends Iterator<Token> {
 
     public Parser(Tokenizer tokenizer) {
         super(parseTokens(tokenizer));
+        initialize();
+    }
+
+    private void initialize() {
+        if (!initialized) {
+            synchronized (Parser.class) {
+                if (!initialized) {
+                    FunctionContainer.loadFunctions();
+                    initialized = true;
+                }
+            }
+        }
     }
 
     private static Token[] parseTokens(Tokenizer tokenizer) {

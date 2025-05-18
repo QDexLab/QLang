@@ -3,7 +3,6 @@ package com.github.qlang.core.ast;
 import com.github.qlang.core.ast.context.SimpleContext;
 import com.github.qlang.core.exception.ParseException;
 import com.github.qlang.core.exception.TokenException;
-import com.github.qlang.core.function.FunctionLoader;
 import com.github.qlang.core.type.QBool;
 import com.github.qlang.core.type.QNumber;
 import com.github.qlang.core.type.QString;
@@ -265,8 +264,6 @@ class ParserTest {
 
     @Test
     void function() {
-        // todo 不要使用这种方式加载
-        FunctionLoader loader = new FunctionLoader();
         assertNumber(66, eval("abs ( -66)  "));
     }
 
