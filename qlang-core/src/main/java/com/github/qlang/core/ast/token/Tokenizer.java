@@ -62,6 +62,7 @@ public class Tokenizer extends Iterator<Character> {
                     advance();
                     return Tokens.DOT;
                 case ',':
+                    advance();
                     return Tokens.COMMA;
                 case '<':
                     if (hasEnough(2)) {

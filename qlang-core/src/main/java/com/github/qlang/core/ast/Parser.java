@@ -314,15 +314,17 @@ public class Parser extends Iterator<Token> {
                 success = true;
                 advance(); // 跳过参数右括号
                 break;
-            } else if (hasArgs) {
+            } else if (!hasArgs) {
+                // 第一个参数
+                args.add(eat());
+                hasArgs = true;
+            } else {
                 if (peek().in(TokenType.COMMA)) {
-                    advance();
+                    advance(); // 跳过逗号
+                    args.add(eat()); // 第2~n个参数
                 } else {
                     throw new ParseException("function parameter must be separated by comma");
                 }
-            } else {
-                args.add(eat());
-                hasArgs = true;
             }
         }
         if (success) {

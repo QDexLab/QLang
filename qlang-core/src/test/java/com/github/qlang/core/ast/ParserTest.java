@@ -4,6 +4,7 @@ import com.github.qlang.core.ast.context.SimpleContext;
 import com.github.qlang.core.exception.ParseException;
 import com.github.qlang.core.exception.TokenException;
 import com.github.qlang.core.type.QBool;
+import com.github.qlang.core.type.QMap;
 import com.github.qlang.core.type.QNumber;
 import com.github.qlang.core.type.QString;
 import org.junit.jupiter.api.BeforeEach;
@@ -265,6 +266,18 @@ class ParserTest {
     @Test
     void function() {
         assertNumber(66, eval("abs ( -66)  "));
+    }
+
+    @Test
+    void map() {
+        assertEquals(new QMap(), eval("map()"));
+        assertEquals(QMap.valueOf(
+                QString.valueOf("hello"), QNumber.valueOf("6")
+                , QString.valueOf("world"), QMap.valueOf(
+                        QNumber.valueOf("15"), QNumber.valueOf("-1"),
+                        null, QNumber.valueOf("6")
+                )
+        ), eval("map(\"hello\", 1+2+3, \"world\", map(7+8,9-10,null,6))"));
     }
 
     private Object eval(String input) {
