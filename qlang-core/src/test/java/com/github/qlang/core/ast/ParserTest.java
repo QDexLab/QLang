@@ -272,12 +272,14 @@ class ParserTest {
     void map() {
         assertEquals(new QMap(), eval("map()"));
         assertEquals(QMap.valueOf(
-                QString.valueOf("hello"), QNumber.valueOf("6")
-                , QString.valueOf("world"), QMap.valueOf(
+                QString.valueOf("hello"), QNumber.valueOf("6"),
+                QString.valueOf("bool"), QBool.TRUE,
+                QString.valueOf("world"), QMap.valueOf(
                         QNumber.valueOf("15"), QNumber.valueOf("-1"),
-                        null, QNumber.valueOf("6")
+                        null, QNumber.valueOf("6"),
+                        QString.valueOf("shanghai"), null
                 )
-        ), eval("map(\"hello\", 1+2+3, \"world\", map(7+8,9-10,null,6))"));
+        ), eval("map(\"hello\", 1+2+3, \"bool\",true, \"world\", map(7+8,9-10,null,6,  \"shanghai\", null))"));
     }
 
     private Object eval(String input) {
