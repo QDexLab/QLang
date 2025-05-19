@@ -1,6 +1,8 @@
 package com.github.qlang.core.function;
 
+import com.github.qlang.core.function.collection.ListFunction;
 import com.github.qlang.core.function.collection.MapFunction;
+import com.github.qlang.core.function.collection.SetFunction;
 import com.github.qlang.core.function.math.AbsFunction;
 
 import java.util.Arrays;
@@ -12,6 +14,8 @@ public class BuiltInFunctionLoader implements FunctionLoader {
     public List<Function> loadFunctions() {
         return Arrays.asList(
                 new AbsFunction(),
+                new ListFunction(),
+                new SetFunction(),
                 new MapFunction()
         );
     }

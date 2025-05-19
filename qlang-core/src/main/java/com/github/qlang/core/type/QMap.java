@@ -7,6 +7,10 @@ import java.util.Objects;
 public class QMap extends QObject {
     private final Map<QObject, QObject> values = new LinkedHashMap<>();
 
+    public static QMap empty() {
+        return new QMap();
+    }
+
     public static QMap valueOf(QObject... args) {
         if (args.length % 2 == 1) {
             throw new IllegalArgumentException("args count must be even");

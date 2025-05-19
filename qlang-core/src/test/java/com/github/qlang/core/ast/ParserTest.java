@@ -4,8 +4,10 @@ import com.github.qlang.core.ast.context.SimpleContext;
 import com.github.qlang.core.exception.ParseException;
 import com.github.qlang.core.exception.TokenException;
 import com.github.qlang.core.type.QBool;
+import com.github.qlang.core.type.QList;
 import com.github.qlang.core.type.QMap;
 import com.github.qlang.core.type.QNumber;
+import com.github.qlang.core.type.QSet;
 import com.github.qlang.core.type.QString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -280,6 +282,30 @@ class ParserTest {
                         QString.valueOf("shanghai"), null
                 )
         ), eval("map(\"hello\", 1+2+3, \"bool\",true, \"world\", map(7+8,9-10,null,6,  \"shanghai\", null))"));
+    }
+
+    @Test
+    void list() {
+        assertEquals(QList.empty(), eval("list(  )"));
+        assertEquals(QList.valueOf(QString.valueOf("hello")), eval("list( \"hello\" )"));
+        assertEquals(QList.valueOf(QString.valueOf("hello"), QString.valueOf("world")), eval("list( \"hello\" , \"world\")"));
+        assertEquals(QList.valueOf(
+                QString.valueOf("hello"),
+                QString.valueOf("world"),
+                QList.valueOf(QBool.FALSE, QBool.TRUE)
+        ), eval("list( \"hello\" , \"world\",list(false,true))"));
+    }
+
+    @Test
+    void set() {
+        assertEquals(QSet.empty(), eval("set(  )"));
+        assertEquals(QSet.valueOf(QString.valueOf("hello")), eval("set( \"hello\" )"));
+        assertEquals(QSet.valueOf(QString.valueOf("hello"), QString.valueOf("world")), eval("set( \"hello\" , \"world\")"));
+        assertEquals(QSet.valueOf(
+                QString.valueOf("hello"),
+                QString.valueOf("world"),
+                QSet.valueOf(QBool.FALSE, QBool.TRUE)
+        ), eval("set( \"hello\" , \"world\",set(false,true))"));
     }
 
     private Object eval(String input) {
