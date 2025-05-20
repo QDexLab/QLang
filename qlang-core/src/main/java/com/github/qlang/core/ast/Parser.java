@@ -298,7 +298,7 @@ public class Parser extends Iterator<Token> {
             } else if (op.is(TokenType.L_SQUARE)) {
                 if (hasEnough(2)) {
                     Node right = eat();
-                    if (peek().is(TokenType.R_SQUARE)) {
+                    if (has() && peek().is(TokenType.R_SQUARE)) {
                         advance();
                         left = new IndexOp(left, right);
                     } else {
@@ -335,7 +335,7 @@ public class Parser extends Iterator<Token> {
             return new Null();
         } else if (Tokens.LPAREN.equals(token)) {
             Node eat = eat();
-            if (Tokens.RPAREN.equals(peek())) {
+            if (has() && peek().is(TokenType.RPAREN)) {
                 advance(); // 跳过右括号
                 return eat;
             }
