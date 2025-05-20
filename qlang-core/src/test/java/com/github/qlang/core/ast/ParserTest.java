@@ -274,6 +274,7 @@ class ParserTest {
     void method() {
         assertNumber(4, eval("map(1,2,3,4,\"5\",true).get(3)"));
         assertBool(true, eval("map(1,2,3,4,\"_5\",true)._5"));
+        assertNumber(88, eval("(-88).abs()"));
     }
 
     @Test
