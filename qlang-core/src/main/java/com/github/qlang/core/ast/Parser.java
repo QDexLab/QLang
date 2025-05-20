@@ -13,9 +13,11 @@ import com.github.qlang.core.ast.node.FuncOp;
 import com.github.qlang.core.ast.node.GtOp;
 import com.github.qlang.core.ast.node.GteOp;
 import com.github.qlang.core.ast.node.Identifier;
+import com.github.qlang.core.ast.node.IndexOp;
 import com.github.qlang.core.ast.node.LShiftOp;
 import com.github.qlang.core.ast.node.LtOp;
 import com.github.qlang.core.ast.node.LteOp;
+import com.github.qlang.core.ast.node.MemberOp;
 import com.github.qlang.core.ast.node.MinusOp;
 import com.github.qlang.core.ast.node.ModOp;
 import com.github.qlang.core.ast.node.MulOp;
@@ -269,8 +271,47 @@ public class Parser extends Iterator<Token> {
             advance();
             return new BitNotOp(eatPosNegNot());
         } else {
-            return eatUnit();
+            return eatMemberIndex();
         }
+    }
+
+    private Node eatMemberIndex() {
+        Node left = eatUnit();
+        while (peek().in(TokenType.DOT, TokenType.L_SQUARE)) {
+            Token op = peek();
+            advance();
+            if (op.is(TokenType.DOT)) {
+                if (hasEnough(2) && peek().is(TokenType.IDENTIFIER) && peek(1).is(TokenType.LPAREN)) {
+                    String name = peek().getValue();
+                    advance(); // 跳过方法名
+                    advance(); // 跳过左括号
+                    Node right = eatFunc(name);
+                    left = new MemberOp(left, right);
+                } else if (hasEnough(1) && peek().is(TokenType.IDENTIFIER)) {
+                    String name = peek().getValue();
+                    advance(); // name
+                    Node right = new Identifier(name);
+                    left = new MemberOp(left, right);
+                } else {
+                    throw new ParseException("unsupported operator: " + op);
+                }
+            } else if (op.is(TokenType.L_SQUARE)) {
+                if (hasEnough(2)) {
+                    Node right = eat();
+                    if (peek().is(TokenType.R_SQUARE)) {
+                        advance();
+                        left = new IndexOp(left, right);
+                    } else {
+                        throw new ParseException("L_SQUARE and R_SQUARE must appear in pairs");
+                    }
+                } else {
+                    throw new ParseException("unsupported operator: " + op);
+                }
+            } else {
+                throw new ParseException("unsupported operator: " + op);
+            }
+        }
+        return left;
     }
 
     private Node eatUnit() {

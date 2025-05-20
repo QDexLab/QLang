@@ -5,6 +5,8 @@ public class Tokens {
     public static final Token NULL = newSymbol(TokenType.NULL);
     public static final Token LPAREN = newSymbol(TokenType.LPAREN);
     public static final Token RPAREN = newSymbol(TokenType.RPAREN);
+    public static final Token L_SQUARE = newSymbol(TokenType.L_SQUARE);
+    public static final Token R_SQUARE = newSymbol(TokenType.R_SQUARE);
     public static final Token PLUS = newSymbol(TokenType.PLUS);
     public static final Token MINUS = newSymbol(TokenType.MINUS);
     public static final Token MUL = newSymbol(TokenType.MUL);

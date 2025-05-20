@@ -24,7 +24,7 @@ public class QList extends QObject {
         this.value.add(value);
     }
 
-    private QObject get(QNumber index) {
+    public QObject get(QNumber index) {
         return this.value.get(index.intValue());
     }
 

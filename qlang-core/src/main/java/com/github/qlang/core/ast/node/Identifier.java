@@ -15,4 +15,8 @@ public class Identifier extends Node {
     public QObject eval(Context context) {
         return context.getVariable(name);
     }
+
+    public String getName() {
+        return name;
+    }
 }

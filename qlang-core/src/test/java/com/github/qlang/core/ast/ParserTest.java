@@ -271,6 +271,25 @@ class ParserTest {
     }
 
     @Test
+    void method() {
+        assertNumber(4, eval("map(1,2,3,4,\"5\",true).get(3)"));
+        assertBool(true, eval("map(1,2,3,4,\"_5\",true)._5"));
+    }
+
+    @Test
+    void index() {
+        String expr = "list(1,2,3,list(false,true))";
+        assertNumber(1, eval(expr + "[0]"));
+        assertNumber(2, eval(expr + "[1]"));
+        assertNumber(3, eval(expr + "[2]"));
+        assertEquals(QList.valueOf(QBool.FALSE, QBool.TRUE), eval(expr + "[3]"));
+        assertEquals(QList.valueOf(QBool.FALSE, QBool.TRUE), eval(expr + "[1+2]"));
+        assertBool(false, eval(expr + "[1+2][0]"));
+        assertBool(true, eval(expr + "[1+2][0+1]"));
+        assertBool(true, eval(expr + "[number_1 + number_2] [number_0 + 1 ]"));
+    }
+
+    @Test
     void map() {
         assertEquals(new QMap(), eval("map()"));
         assertEquals(QMap.valueOf(

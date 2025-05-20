@@ -26,4 +26,12 @@ public class FuncOp extends Node {
         }
         throw new RuntimeException("function " + this.name + " not found");
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Node[] getArguments() {
+        return arguments;
+    }
 }

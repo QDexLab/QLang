@@ -27,6 +27,8 @@ public class TokenType {
     public static final String DOT = "DOT";
     public static final String LPAREN = "LPAREN";
     public static final String RPAREN = "RPAREN";
+    public static final String L_SQUARE = "L_SQUARE";
+    public static final String R_SQUARE = "R_SQUARE";
     public static final String TRUE = "TRUE";
     public static final String FALSE = "FALSE";
     public static final String NOT = "NOT";

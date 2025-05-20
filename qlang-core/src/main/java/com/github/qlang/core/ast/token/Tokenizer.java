@@ -29,6 +29,12 @@ public class Tokenizer extends Iterator<Character> {
                 case ')':
                     advance();
                     return Tokens.RPAREN;
+                case '[':
+                    advance();
+                    return Tokens.L_SQUARE;
+                case ']':
+                    advance();
+                    return Tokens.R_SQUARE;
                 case '+':
                     advance();
                     return Tokens.PLUS;
