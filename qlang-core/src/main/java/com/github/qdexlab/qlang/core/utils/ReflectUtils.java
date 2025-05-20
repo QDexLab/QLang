@@ -21,7 +21,7 @@ public class ReflectUtils {
         if (method == null) {
             method = nearestMethod(type, name, args);
             if (method == null) {
-                throw new MethodEvalException("could not find method " + name);
+                throw new MethodEvalException("could not find method " + signature);
             }
             CACHE.put(signature, method);
         }
@@ -92,6 +92,15 @@ public class ReflectUtils {
         @Override
         public int hashCode() {
             return Objects.hash(type, name, Arrays.hashCode(args));
+        }
+
+        @Override
+        public String toString() {
+            return "MethodSignature{" +
+                    "type=" + type +
+                    ", name='" + name + '\'' +
+                    ", args=" + Arrays.toString(args) +
+                    '}';
         }
     }
 }
