@@ -13,6 +13,7 @@ public @interface FunctionDefinition {
 
     /**
      * function name
+     * @return function name
      */
     String value();
 }

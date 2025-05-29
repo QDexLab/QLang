@@ -1,13 +1,20 @@
 plugins {
     id 'java'
     id 'application'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 allprojects {
-    group = 'com.github.qlang'
-    version = '0.1.0-SNAPSHOT'
+
+    group = 'io.github.qdexlab'
+    version = '1.0.0'
+
+
 
     repositories {
+        mavenLocal()
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/central' }
         mavenCentral()
@@ -16,9 +23,74 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+                pom {
+                    name = 'qlang'
+                    description = 'qlang'
+                    url = 'https://github.com/QDexLab/QLang'
+                    licenses {
+                        license {
+                            name = 'Apache-2.0'
+                            url = 'https://spdx.org/licenses/Apache-2.0.html'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'xindeqiang'
+                            name = 'xindeqiang'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:https://github.com/QDexLab/QLang.git'
+                        developerConnection = 'scm:git:ssh://github.com/QDexLab/QLang.git'
+                        url = 'http://github.com/QDexLab/QLang'
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                def releasesRepoUrl = layout.buildDirectory.dir('repos/releases')
+                def snapshotsRepoUrl = layout.buildDirectory.dir('repos/snapshots')
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+        }
+    }
+
+    signing {
+        useGpgCmd()
+        sign publishing.publications.mavenJava
+    }
+
+
+    javadoc {
+        if(JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
 
     dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
@@ -27,5 +99,13 @@ subprojects {
 
     test {
         useJUnitPlatform()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.withType(Javadoc) {
+        options.encoding = "UTF-8"
     }
 }
